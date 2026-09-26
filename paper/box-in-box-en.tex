@@ -39,7 +39,8 @@ planar tests expressed by a formula with a single square root. The key geometric
 box fits at all, it fits in a position where one of its edges is perpendicular to one of the axes of
 the container; we prove this by showing that at any other position all three widths of the box can be
 decreased simultaneously. The problem was posed by Garnett in 1923 and was described by Jerrard and
-Wetzel in 2004 as unsolved. The main theorem has been verified in the Lean~4 proof assistant with the
+Wetzel in 2004 as unsolved. We also give the criterion for strict fitting (without touching the
+container), which is not obtained by merely making the inequalities strict. The results have been verified in the Lean~4 proof assistant with the
 Mathlib library.
 \end{abstract}
 
@@ -421,10 +422,64 @@ volumes are all smaller for $Q$, yet $Q$ does not fit: its $1.1\times1.1$ face w
 larger than $3\sqrt2/4$ in the cube.
 \end{example}
 
+\section{Strict fitting}\label{sec:strict}
+
+We say that $Q$ \emph{fits strictly} into $P$ if $f(Q)$ lies in the open box
+$(0,p_1)\times(0,p_2)\times(0,p_3)$ for some isometry $f$, i.e.\ $Q$ can be placed without touching
+the boundary of $P$. By the strict analogue of Lemma~\ref{lem:widths} (with the same proof), this
+holds if and only if $w(R)<p$ for some $R\in\Ort$.
+
+\begin{theorem}\label{thm:shrink}
+Let $q\ge0$. The box $Q$ fits strictly into $P$ if and only if there is $\varepsilon>0$ with
+$\varepsilon<\min_ip_i$ such that $\NC(p-\varepsilon(1,1,1),q)$ holds.
+\end{theorem}
+\begin{proof}
+If $w(R)<p$, then $w(R)\le p-\varepsilon(1,1,1)$ for $\varepsilon=\tfrac12\min_i(p_i-w_i(R))$;
+apply Theorem~\ref{thm:main} to $p-\varepsilon(1,1,1)$. Conversely, Theorem~\ref{thm:main} gives
+$R$ with $w(R)\le p-\varepsilon(1,1,1)<p$.
+\end{proof}
+
+An explicit criterion is obtained by making the inequalities strict, but \emph{not only} them. For
+$x\ge y\ge0$, $s\ge0$ put
+\[
+H^\circ(x,y;s)=\begin{cases}y,& x<s,\\ \text{the second line of \eqref{eq:H}},& x\ge s,\end{cases}
+\]
+$H^\circ(u,v;s)=H^\circ(\max(u,v),\min(u,v);s)$, and
+$\Fit^\circ(a,b;u,v):\Longleftrightarrow\min(u,v)<a$ and $H^\circ(u,v;a)<b$. Let $\NC^\circ$ be the
+criterion of Definition~\ref{def:NC} with $\min(q_k,q_l)<p_i$, $h^*=H^\circ(q_k,q_l;p_i)$ and
+$\Fit^\circ$ in place of $\min(q_k,q_l)\le p_i$, $H$ and $\Fit$.
+
+\begin{theorem}\label{thm:strict}
+Let $p>0$, $q\ge0$. The box $Q$ fits strictly into $P$ if and only if $\NC^\circ(p,q)$ holds.
+\end{theorem}
+
+\begin{proof}[Sketch]
+$H^\circ(x,y;s)=\inf\{B:A<s\}$ in the notation of Section~\ref{sec:strip}, and $\Fit^\circ(a,b;u,v)$
+holds if and only if $uc+vd<a$, $ud+vc<b$ for some $c,d\ge0$, $c^2+d^2=1$. For
+$x<s$ the angle $\theta=0$ is admissible. For $x\ge s$ the admissible set is
+$(\theta^*,\pi/2]$ (it is $[\theta^*,\pi/2]$ minus the point $\theta^*$ when $x=s$), and the infimum
+of $B$ equals that of Lemma~\ref{lem:strip} with the case $x\le s$ excluded; existence uses a slightly
+narrower strip $s'<s$ and the continuity of the second line of \eqref{eq:H} in $s$. With these strict
+forms of Lemma~\ref{lem:strip}, the proofs of Propositions~\ref{prop:suff} and~\ref{prop:zero} go
+through verbatim (in the former, $h^*$ is replaced by a slightly larger number, which is possible
+because the inequalities are strict). Necessity reduces to the non-strict case: by
+Theorem~\ref{thm:shrink} and Section~\ref{sec:proof} there is $R$ with a zero entry and
+$w(R)\le p-\varepsilon(1,1,1)<p$.
+\end{proof}
+
+\begin{remark}
+The change of the case split from $x\le s$ to $x<s$ is essential: $H(x,y;s)$ jumps at $s=x$. A face
+whose longer side equals the height may stand upright, touching the ceiling, with trace $y$; if
+touching is forbidden, it cannot be tilted slightly (a small tilt increases its height), and its
+trace jumps to $\min(x,\,y(3x^2-y^2)/(x^2+y^2))$. For example, for the unit cube and $q=(1,0.5,0.5)$
+the naive strict criterion (strict inequalities with $H$) holds, whereas $\NC^\circ$ fails, so this
+box does not fit strictly.
+\end{remark}
+
 \section{Formal verification}\label{sec:lean}
 
 The accompanying repository contains a Lean~4 formalization (Lean v4.34.0-rc2, Mathlib) of
-Theorem~\ref{thm:main}, about 1400 lines in six files:
+Theorems~\ref{thm:main}, \ref{thm:shrink} and~\ref{thm:strict}, about 1800 lines in seven files:
 \begin{itemize}
 \item \texttt{Reduction.lean}, \texttt{Statement.lean}: definitions, Lemma~\ref{lem:widths} (via
 Mazur--Ulam), Lemma~\ref{lem:strip}(a), Proposition~\ref{prop:suff};
@@ -432,7 +487,9 @@ Mazur--Ulam), Lemma~\ref{lem:strip}(a), Proposition~\ref{prop:suff};
 Proposition~\ref{prop:zero};
 \item \texttt{Motzkin.lean}: the theorem of the alternative (via Hahn--Banach separation);
 \item \texttt{Descent.lean}: Section~\ref{sec:descent};
-\item \texttt{Necessity.lean}: Section~\ref{sec:proof} and the main theorem \texttt{fits\_iff\_NC}.
+\item \texttt{Necessity.lean}: Section~\ref{sec:proof} and the main theorem \texttt{fits\_iff\_NC};
+\item \texttt{Strict.lean}: Section~\ref{sec:strict}, theorems \texttt{fitsStrict\_iff\_shrink} and
+\texttt{fitsStrict\_iff\_NCs} (with two further definitions, the open box and strict fitting).
 \end{itemize}
 The statement and the two definitions on which its meaning depends read (Unicode symbols of the
 source replaced by ASCII):

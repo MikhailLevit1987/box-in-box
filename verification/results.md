@@ -7,6 +7,7 @@ The last column records whether the model's arguments were checked by hand and f
 |---|---|---|---|---|---|
 | 1 | 2026-09-26 | DeepSeek (version not recorded) | EQUIVALENT | none (1–7: OK) | yes, all seven correct |
 | 2 | 2026-09-26 | Qwen3.7-Plus | EQUIVALENT | none (1–7: OK) | yes, all seven correct |
+| 3 | 2026-09-26 | Qwen3.8-Max | EQUIVALENT | none (1–7: OK) | yes, all seven correct |
 
 ## Run 1 — details
 
@@ -30,3 +31,16 @@ The last column records whether the model's arguments were checked by hand and f
   Correct.
 - Item 7 (not in the prompt's list, raised by the model): division by `x² + y²` is safe, since `x > 0`
   in the branch `x > s ≥ 0`. Correct.
+
+## Run 3 — details (answer given in Russian)
+
+- Item 3: additionally checked that `h* = stripH(q_k, q_l, p_i)` is nonnegative, so the nested call
+  `stripH(q_j, h*, p_{i'})` again receives arguments in the intended domain. Correct.
+- Item 7: `stripH`, `Fit2`, `NC` are total Lean functions and may differ from the partial mathematical
+  notation outside the domain `pᵢ > 0`, `qⱼ ≥ 0`, but the theorem is stated only on that domain.
+  Correct.
+- Items 1, 2, 4, 5, 6: same arguments as in runs 1–2. Correct.
+
+Note: the prompt covers only `fits_iff_NC`. The strict-fitting theorems in `lean/Boxes/Strict.lean`
+(added later) introduce two more trusted definitions, `openBox` and `FitsStrict`, not covered by
+runs 1–3.

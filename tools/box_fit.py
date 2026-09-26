@@ -50,6 +50,28 @@ def nc(p, q):
     return any(nc_case(p, q, s, t) for s in perms for t in perms)
 
 
+def strip_h_strict(u, v, s):
+    """Strict version of strip_h (Lean: stripHs). Note the branch `x < s`, not `x <= s`."""
+    x, y = max(u, v), min(u, v)
+    if x < s:
+        return y
+    r2 = x * x + y * y
+    return min(x, (2 * x * y * s + (x * x - y * y) * math.sqrt(max(r2 - s * s, 0.0))) / r2)
+
+
+def nc_strict(p, q):
+    """Strict criterion NCs (Lean: fitsStrict_iff_NCs): Q fits into the open box P."""
+    perms = list(itertools.permutations(range(3)))
+    for s in perms:
+        for t in perms:
+            if not min(q[t[1]], q[t[2]]) < p[s[0]]:
+                continue
+            h = strip_h_strict(q[t[1]], q[t[2]], p[s[0]])
+            if min(q[t[0]], h) < p[s[1]] and strip_h_strict(q[t[0]], h, p[s[1]]) < p[s[2]]:
+                return True
+    return False
+
+
 def carver(a, b, u, v):
     """Carver's closed-form 2D criterion (independent cross-check of fit2, not used by nc)."""
     a, b = max(a, b), min(a, b)
@@ -77,6 +99,17 @@ def selftest():
     ok = True
     for name, p, q, expected in examples:
         got = nc(p, q)
+        flag = "ok " if got == expected else "BAD"
+        ok &= got == expected
+        print(f"{flag} {name}: {got}")
+    strict_examples = [
+        ("strict: 1 x 0.5 x 0.5 into the unit cube (touches)", (1, 1, 1), (1, 0.5, 0.5), False),
+        ("strict: 0.99 x 0.5 x 0.5 into the unit cube", (1, 1, 1), (0.99, 0.5, 0.5), True),
+        ("strict: box into itself", (3, 4, 8), (3, 4, 8), False),
+        ("strict: 12 x 2 x 3 into 10 x 10 x 3.01", (10, 10, 3.01), (12, 2, 3), True),
+    ]
+    for name, p, q, expected in strict_examples:
+        got = nc_strict(p, q)
         flag = "ok " if got == expected else "BAD"
         ok &= got == expected
         print(f"{flag} {name}: {got}")

@@ -6,3 +6,5 @@ import Boxes
 #print axioms Boxes.fits_iff_NC
 #print axioms Boxes.fits_of_NC
 #print axioms Boxes.NC_of_fits
+#print axioms Boxes.fitsStrict_iff_shrink
+#print axioms Boxes.fitsStrict_iff_NCs

@@ -29,6 +29,15 @@ These are 9 explicit checks (18 counting the order of `i', i''`). The key step: 
 all, it fits with one of its edges perpendicular to one of the axes of the container, because at any
 other position all three widths of the box can be decreased simultaneously.
 
+### Strict fitting
+
+For fitting without touching the container (`lean/Boxes/Strict.lean`):
+
+* `fitsStrict_iff_shrink`: the box fits strictly ⇔ it fits (criterion above) into `p − ε` for some `ε > 0`;
+* `fitsStrict_iff_NCs`: an explicit strict criterion — all inequalities strict **and** the case split
+  in `H` changed from `x ≤ s` to `x < s`. Making only the inequalities strict is wrong: for the unit
+  cube and the `1 × 0.5 × 0.5` box it would answer "fits strictly".
+
 ## Contents
 
 | Path | What |
@@ -56,6 +65,8 @@ Expected output of the last command:
 'Boxes.fits_iff_NC' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Boxes.fits_of_NC' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Boxes.NC_of_fits' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Boxes.fitsStrict_iff_shrink' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Boxes.fitsStrict_iff_NCs' depends on axioms: [propext, Classical.choice, Quot.sound]
 ```
 
 i.e. no `sorryAx`. The meaning of the theorem depends only on the definitions `box` and `Fits`
