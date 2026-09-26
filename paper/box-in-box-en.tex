@@ -49,7 +49,7 @@ planar tests expressed by a formula with a single square root. The key geometric
 box fits at all, it fits in a position where one of its edges is perpendicular to one of the axes of
 the container; we prove this by showing that at any other position all three widths of the box can be
 decreased simultaneously. The problem was posed by Garnett in 1923 and was described by Jerrard and
-Wetzel in 2004 as unsolved. The main theorem has been verified in the Lean~4 proof assistant with the Mathlib
+Wetzel in 2004 as an instance of a general unsolved fitting problem. The main theorem has been verified in the Lean~4 proof assistant with the Mathlib
 library, together with the analogous criterion for strict fitting (without touching the container),
 which is not obtained by merely making the inequalities strict.
 \end{abstract}
@@ -104,7 +104,7 @@ there are $9$ choices of $(i,j)$ and two orders of the ``floor'' axes $(i',i'')$
 
 Geometrically, the check describes positions in which edge $j$ of $Q$ is horizontal, i.e.\
 perpendicular to axis $i$ of $P$ (the ``height''). The face $q_k\times q_l$ then stands in the vertical
-strip of height $p_i$; its trace on the floor is a segment of length at least $h^*$, and the rectangle
+strip of height $p_i$; its orthogonal projection onto the floor is a segment of length at least $h^*$, and the rectangle
 $q_j\times h^*$ must fit into the floor $p_{i'}\times p_{i''}$.
 
 \begin{theorem}[Main theorem]\label{thm:main}
@@ -295,7 +295,9 @@ Since $e_i\cdot(v\times a)=v\cdot(a\times e_i)$, a direct computation gives
 \begin{equation}\label{eq:cay}
 (C(v)a)_i-a_i=\frac{2}{1+\abs{v}^2}\,D_i(a;v).
 \end{equation}
-Note that $P_i(a;\cdot)$ is a quadratic form: $P_i(a;tv)=t^2P_i(a;v)$.
+Note that $P_i(a;\cdot)$ is a quadratic form: $P_i(a;tv)=t^2P_i(a;v)$. This is why we use the Cayley
+parametrization: by \eqref{eq:cay} the change of each width is, up to a positive factor, an explicit
+polynomial of degree two in $v$, so both its first- and second-order terms are available.
 
 \subsection{Descent along a curve}
 We shall rotate along $v(t)=t(h+tz)$, $t>0$ small. Then
@@ -353,6 +355,10 @@ is positive both for $h_i\ne0$ and for $h_i=0$.
 \end{proof}
 
 \subsection{Choice of the curve}
+The idea is as follows. Either some direction $h$ decreases all widths to first order, or the
+first-order terms $b_i\cdot h$ are blocked by a nonnegative relation $\sum_i
+u_ib_i=0$; in the latter
+case Lemma~ef{lem:key} shows that the second-order terms decrease the widths.
 We use Motzkin's theorem of the alternative \cite{Motzkin1936,Schrijver1986} in the following form:
 for vectors $b_i\in\R^3$ and numbers $c_i$, $i\in K$, either the system $b_i\cdot z<c_i$ ($i\in K$)
 has a solution, or there is $\mu\ge0$, $\mu\ne0$, supported on $K$, with $\sum_i\mu_ib_i=0$ and
