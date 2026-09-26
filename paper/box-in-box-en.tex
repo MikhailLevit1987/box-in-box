@@ -426,8 +426,9 @@ larger than $3\sqrt2/4$ in the cube.
 
 We say that $Q$ \emph{fits strictly} into $P$ if $f(Q)$ lies in the open box
 $(0,p_1)\times(0,p_2)\times(0,p_3)$ for some isometry $f$, i.e.\ $Q$ can be placed without touching
-the boundary of $P$. By the strict analogue of Lemma~\ref{lem:widths} (with the same proof), this
-holds if and only if $w(R)<p$ for some $R\in\Ort$.
+the boundary of $P$. This holds if and only if $w(R)<p$ for some $R\in\Ort$: as in the proof of
+Lemma~\ref{lem:widths}, the $i$-th coordinate of $RQ$ fills a closed interval of length $w_i(R)$, and
+some translate of it lies in the open interval $(0,p_i)$ if and only if $w_i(R)<p_i$.
 
 \begin{theorem}\label{thm:shrink}
 Let $q\ge0$. The box $Q$ fits strictly into $P$ if and only if there is $\varepsilon>0$ with
@@ -453,27 +454,91 @@ $\Fit^\circ$ in place of $\min(q_k,q_l)\le p_i$, $H$ and $\Fit$.
 Let $p>0$, $q\ge0$. The box $Q$ fits strictly into $P$ if and only if $\NC^\circ(p,q)$ holds.
 \end{theorem}
 
-\begin{proof}[Sketch]
-$H^\circ(x,y;s)=\inf\{B:A<s\}$ in the notation of Section~\ref{sec:strip}, and $\Fit^\circ(a,b;u,v)$
-holds if and only if $uc+vd<a$, $ud+vc<b$ for some $c,d\ge0$, $c^2+d^2=1$. For
-$x<s$ the angle $\theta=0$ is admissible. For $x\ge s$ the admissible set is
-$(\theta^*,\pi/2]$ (it is $[\theta^*,\pi/2]$ minus the point $\theta^*$ when $x=s$), and the infimum
-of $B$ equals that of Lemma~\ref{lem:strip} with the case $x\le s$ excluded; existence uses a slightly
-narrower strip $s'<s$ and the continuity of the second line of \eqref{eq:H} in $s$. With these strict
-forms of Lemma~\ref{lem:strip}, the proofs of Propositions~\ref{prop:suff} and~\ref{prop:zero} go
-through verbatim (in the former, $h^*$ is replaced by a slightly larger number, which is possible
-because the inequalities are strict). Necessity reduces to the non-strict case: by
-Theorem~\ref{thm:shrink} and Section~\ref{sec:proof} there is $R$ with a zero entry and
-$w(R)\le p-\varepsilon(1,1,1)<p$.
+We use the notation $A=xc+yd$, $B=xd+yc$ of Section~\ref{sec:strip}, and write
+$T(s)=\bigl(2xys+(x^2-y^2)\sqrt{x^2+y^2-s^2}\bigr)/(x^2+y^2)$ for the second line of \eqref{eq:H}
+without the minimum. Note that $H^\circ\ge0$.
+
+\begin{lemma}[Strict strip lemma]\label{lem:strictstrip}
+Let $x\ge y\ge0$ and $s\ge0$.
+\begin{enumerate}
+\item[(a$^\circ$)] If $y<s$ and $H^\circ(x,y;s)<t$, there are $c,d\ge0$ with $c^2+d^2=1$, $A<s$ and
+$B<t$.
+\item[(b$^\circ$)] If $c,d\ge0$, $c^2+d^2=1$ and $A<s$, then $y<s$ and $H^\circ(x,y;s)\le B$.
+\end{enumerate}
+The same holds for arbitrary $u,v\ge0$ in place of $x,y$, as in Lemma~\ref{lem:strip}.
+\end{lemma}
+
+\begin{proof}
+We use the angle $\theta$, the functions $A(\theta)$, $B(\theta)$ and their properties from the proof of
+Lemma~\ref{lem:strip}.
+
+(b$^\circ$) By concavity $A\ge y$, so $y<s$. If $x<s$, then $H^\circ=y\le\min(B(0),B(\pi/2))\le B$.
+Let $x\ge s$; then $x>0$. On $[0,\alpha]$ we have $A\ge x\ge s$, so $\theta\in(\alpha,\pi/2]$. On
+$[\alpha,\pi/2]$ the function $A$ decreases from $r\ge x\ge s$ to $y<s$, so there is
+$\theta^*\in[\alpha,\pi/2]$ with $A(\theta^*)=s$, and $A(\theta)<s$ forces $\theta>\theta^*$. The
+computation in the proof of Lemma~\ref{lem:strip} (valid for every $s\in[y,r]$) gives
+$B(\theta^*)=T(s)$, and by concavity of $B$ on $[\theta^*,\pi/2]$ we get
+$B(\theta)\ge\min(T(s),x)=H^\circ(x,y;s)$.
+
+(a$^\circ$) If $x<s$, take $\theta=0$: $A=x<s$ and $B=y=H^\circ<t$. Let $x\ge s$, so
+$H^\circ=\min(x,T(s))<t$. If $x<t$, take $\theta=\pi/2$: $A=y<s$, $B=x<t$. Otherwise $T(s)<t$. Since
+$T$ is continuous, there is $s'\in(y,s)$ with $T(s')<t$. As $y<s'<s\le x$, Lemma~\ref{lem:strip}(a)
+applied to the strip of width $s'$ gives $c,d$ with $A\le s'<s$ and
+$B\le H(x,y;s')=\min(x,T(s'))\le T(s')<t$.
+\end{proof}
+
+By the planar version of the strict widths lemma, Lemma~\ref{lem:strictstrip} shows that
+$\Fit^\circ(a,b;u,v)$ holds if and only if the $u\times v$ rectangle fits strictly into the $a\times b$
+rectangle.
+
+\begin{proposition}\label{prop:strictsuff}
+If a check of $\NC^\circ(p,q)$ holds, then $Q$ fits strictly into $P$.
+\end{proposition}
+\begin{proof}
+As in Proposition~\ref{prop:suff}, let the check be $\min(q_2,q_3)<p_1$ and
+$\Fit^\circ(p_2,p_3;q_1,h)$ with $h=H^\circ(q_2,q_3;p_1)\ge0$. Lemma~\ref{lem:strictstrip}(a$^\circ$)
+for the rectangle $q_1\times h$ in the strip of width $p_2$ gives $c_2,d_2\ge0$, $c_2^2+d_2^2=1$, with
+$q_1c_2+hd_2<p_2$ and $q_1d_2+hc_2<p_3$. Since $c_2,d_2\le1$, there is $\eta>0$ with
+\[
+q_1c_2+(h+\eta)d_2<p_2,\qquad q_1d_2+(h+\eta)c_2<p_3 .
+\]
+Lemma~\ref{lem:strictstrip}(a$^\circ$) for the rectangle $q_2\times q_3$ in the strip of width $p_1$
+with $t=h+\eta$ gives $c_1,d_1\ge0$, $c_1^2+d_1^2=1$, with $q_2c_1+q_3d_1<p_1$ and
+$q_2d_1+q_3c_1<h+\eta$. For the matrix $R$ of Proposition~\ref{prop:suff} we obtain $w_1<p_1$,
+$w_2\le q_1c_2+d_2(h+\eta)<p_2$ and $w_3\le q_1d_2+c_2(h+\eta)<p_3$.
+\end{proof}
+
+\begin{proposition}\label{prop:strictzero}
+Let $q\ge0$, $p>0$, and let $R\in\Ort$ satisfy $w(R)<p$ and $R_{ij}=0$ for some $i,j$. Then
+$\NC^\circ(p,q)$ holds.
+\end{proposition}
+\begin{proof}
+Repeat the proof of Proposition~\ref{prop:zero} with $c,d,c',d',B$ as there. From $w_1<p_1$ and
+Lemma~\ref{lem:strictstrip}(b$^\circ$), $\min(q_2,q_3)<p_1$ and $h:=H^\circ(q_2,q_3;p_1)\le B$. Hence
+$q_1c'+d'h\le w_2<p_2$ and $q_1d'+c'h\le w_3<p_3$, and Lemma~\ref{lem:strictstrip}(b$^\circ$) for
+the rectangle $q_1\times h$ in the strip of width $p_2$ with direction $(c',d')$ gives
+$\min(q_1,h)<p_2$ and $H^\circ(q_1,h;p_2)\le q_1d'+hc'<p_3$, i.e.\ $\Fit^\circ(p_2,p_3;q_1,h)$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:strict}]
+Sufficiency is Proposition~\ref{prop:strictsuff}. Conversely, let $w(R)<p$. With $\varepsilon$ as in
+the proof of Theorem~\ref{thm:shrink}, $Q$ fits into $p-\varepsilon(1,1,1)$, and Section~\ref{sec:proof}
+gives $R'\in\Ort$ with a zero entry and $w(R')\le p-\varepsilon(1,1,1)<p$. Proposition~\ref{prop:strictzero}
+concludes the proof.
 \end{proof}
 
 \begin{remark}
 The change of the case split from $x\le s$ to $x<s$ is essential: $H(x,y;s)$ jumps at $s=x$. A face
 whose longer side equals the height may stand upright, touching the ceiling, with trace $y$; if
 touching is forbidden, it cannot be tilted slightly (a small tilt increases its height), and its
-trace jumps to $\min(x,\,y(3x^2-y^2)/(x^2+y^2))$. For example, for the unit cube and $q=(1,0.5,0.5)$
-the naive strict criterion (strict inequalities with $H$) holds, whereas $\NC^\circ$ fails, so this
-box does not fit strictly.
+trace jumps to $\min(x,T(x))$ with $T(x)=y(3x^2-y^2)/(x^2+y^2)$. For example, let $p=(1,1,1)$ and
+$q=(1,0.5,0.5)$. The naive strict criterion (strict inequalities with $H$) holds: with a horizontal
+edge $0.5$, the face $1\times0.5$ stands upright, $h^*=H(1,0.5;1)=0.5$, and $0.5\times0.5$ fits
+strictly into $1\times1$. But $\NC^\circ$ fails. Here $T(1)=0.5\cdot2.75/1.25=1.1$ for $x=1$, $y=0.5$,
+so $H^\circ(1,0.5;1)=\min(1,1.1)=1$. If the horizontal edge is $1$, then $h=H^\circ(0.5,0.5;1)=0.5$
+and the floor requires $H^\circ(1,0.5;1)<1$; if it is $0.5$, then $h=H^\circ(1,0.5;1)=1$ and the floor
+again requires $H^\circ(0.5,1;1)<1$. Hence, by Theorem~\ref{thm:strict}, this box does not fit
+strictly.
 \end{remark}
 
 \section{Formal verification}\label{sec:lean}
