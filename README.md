@@ -1,5 +1,7 @@
 # When does a box fit into a box?
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22974798.svg)](https://doi.org/10.5281/zenodo.22974798)
+
 An explicit necessary and sufficient condition for a rectangular box with edges `q₁, q₂, q₃ ≥ 0`
 to fit, after an arbitrary rigid motion, into a rectangular box with edges `p₁, p₂, p₃ > 0`,
 with a complete formal proof in Lean 4 / Mathlib.
@@ -82,6 +84,12 @@ python tools/box_fit.py --selftest
 
 Floating-point comparisons are exact only in exact arithmetic; near the boundary rounding may flip
 the answer.
+
+## Citation
+
+Mikhail Levit, *When does a box fit into a box? An explicit criterion with a formal proof*, 2026.
+Zenodo, [doi:10.5281/zenodo.22974798](https://doi.org/10.5281/zenodo.22974798) (all versions;
+version 1.0: [doi:10.5281/zenodo.22974799](https://doi.org/10.5281/zenodo.22974799)).
 
 ## License
 
