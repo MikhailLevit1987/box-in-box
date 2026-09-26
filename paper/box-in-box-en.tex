@@ -49,7 +49,8 @@ planar tests expressed by a formula with a single square root. The key geometric
 box fits at all, it fits in a position where one of its edges is perpendicular to one of the axes of
 the container; we prove this by showing that at any other position all three widths of the box can be
 decreased simultaneously. The problem was posed by Garnett in 1923 and was described by Jerrard and
-Wetzel in 2004 as an instance of a general unsolved fitting problem. The main theorem has been verified in the Lean~4 proof assistant with the Mathlib
+Wetzel in 2004 as an instance of a general unsolved fitting problem for boxes in
+higher dimensions. The main theorem has been verified in the Lean~4 proof assistant with the Mathlib
 library, together with the analogous criterion for strict fitting (without touching the container),
 which is not obtained by merely making the inequalities strict.
 \end{abstract}
@@ -358,7 +359,8 @@ is positive both for $h_i\ne0$ and for $h_i=0$.
 The idea is as follows. Either some direction $h$ decreases all widths to first order, or the
 first-order terms $b_i\cdot h$ are blocked by a nonnegative relation $\sum_i
 u_ib_i=0$; in the latter
-case Lemma~ef{lem:key} shows that the second-order terms decrease the widths.
+case Lemma~
+ef{lem:key} shows that the second-order terms decrease the widths.
 We use Motzkin's theorem of the alternative \cite{Motzkin1936,Schrijver1986} in the following form:
 for vectors $b_i\in\R^3$ and numbers $c_i$, $i\in K$, either the system $b_i\cdot z<c_i$ ($i\in K$)
 has a solution, or there is $\mu\ge0$, $\mu\ne0$, supported on $K$, with $\sum_i\mu_ib_i=0$ and
