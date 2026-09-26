@@ -1,7 +1,17 @@
 \documentclass[11pt]{amsart}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+% Unicode symbols of the Lean source, so that it can be quoted verbatim
 \DeclareUnicodeCharacter{2286}{\ensuremath{\subseteq}}
+\DeclareUnicodeCharacter{2192}{\ensuremath{\to}}
+\DeclareUnicodeCharacter{211D}{\ensuremath{\mathbb{R}}}
+\DeclareUnicodeCharacter{2200}{\ensuremath{\forall}}
+\DeclareUnicodeCharacter{2203}{\ensuremath{\exists}}
+\DeclareUnicodeCharacter{2264}{\ensuremath{\le}}
+\DeclareUnicodeCharacter{2227}{\ensuremath{\wedge}}
+\DeclareUnicodeCharacter{2243}{\ensuremath{\simeq}}
+\DeclareUnicodeCharacter{1D62}{\ensuremath{_i}}
+\DeclareUnicodeCharacter{2194}{\ensuremath{\leftrightarrow}}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage[margin=1in]{geometry}
 \setlength{\emergencystretch}{3em}
@@ -465,14 +475,12 @@ Proposition~\ref{prop:zero};
 \item \texttt{Strict.lean}: Section~\ref{sec:strict}, theorems \texttt{fitsStrict\_iff\_shrink} and
 \texttt{fitsStrict\_iff\_NCs} (with two further definitions, the open box and strict fitting).
 \end{itemize}
-The statement and the two definitions on which its meaning depends read (Unicode symbols of the
-source replaced by ASCII):
+The statement and the two definitions on which its meaning depends read verbatim:
 \begin{verbatim}
-def box (q : Fin 3 -> Real) : Set E3 := {x | forall i, 0 <= x i /\ x i <= q i}
-def Fits (p q : Fin 3 -> Real) : Prop :=
-  exists f : IsometryEquiv E3 E3, f '' box q ⊆ box p
-theorem fits_iff_NC (p q : Fin 3 -> Real) (hp : forall i, 0 < p i)
-    (hq : forall i, 0 <= q i) : Fits p q <-> NC p q
+def box (q : Fin 3 → ℝ) : Set E3 := {x | ∀ i, 0 ≤ x i ∧ x i ≤ q i}
+def Fits (p q : Fin 3 → ℝ) : Prop := ∃ f : E3 ≃ᵢ E3, f '' box q ⊆ box p
+theorem fits_iff_NC (p q : Fin 3 → ℝ) (hp : ∀ i, 0 < p i) (hq : ∀ i, 0 ≤ q i) :
+    Fits p q ↔ NC p q
 \end{verbatim}
 Here \texttt{E3} is the Euclidean space $\R^3$, \texttt{box q} is the set of points $x$ with
 $0\le x_i\le q_i$, and \texttt{Fits p q} means that some isometry $f$ of $\R^3$ maps \texttt{box q}

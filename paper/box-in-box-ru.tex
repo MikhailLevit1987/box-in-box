@@ -2,7 +2,17 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T2A]{fontenc}
 \usepackage[russian]{babel}
+% символы Unicode исходного текста Lean, чтобы цитировать его дословно
 \DeclareUnicodeCharacter{2286}{\ensuremath{\subseteq}}
+\DeclareUnicodeCharacter{2192}{\ensuremath{\to}}
+\DeclareUnicodeCharacter{211D}{\ensuremath{\mathbb{R}}}
+\DeclareUnicodeCharacter{2200}{\ensuremath{\forall}}
+\DeclareUnicodeCharacter{2203}{\ensuremath{\exists}}
+\DeclareUnicodeCharacter{2264}{\ensuremath{\le}}
+\DeclareUnicodeCharacter{2227}{\ensuremath{\wedge}}
+\DeclareUnicodeCharacter{2243}{\ensuremath{\simeq}}
+\DeclareUnicodeCharacter{1D62}{\ensuremath{_i}}
+\DeclareUnicodeCharacter{2194}{\ensuremath{\leftrightarrow}}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage[margin=1in]{geometry}
 \setlength{\emergencystretch}{3em}
@@ -490,14 +500,12 @@ $1\times1$. Но $\NC^\circ$ не выполнен: $H^\circ(1;0{,}5;1)=\min\big
 \texttt{fitsStrict\_iff\_NCs} (с двумя дополнительными определениями: открытый параллелепипед и
 строгое вложение).
 \end{itemize}
-Формулировка и два определения, от которых зависит её смысл, выглядят так (символы Unicode исходного
-текста заменены на ASCII):
+Формулировка и два определения, от которых зависит её смысл, дословно:
 \begin{verbatim}
-def box (q : Fin 3 -> Real) : Set E3 := {x | forall i, 0 <= x i /\ x i <= q i}
-def Fits (p q : Fin 3 -> Real) : Prop :=
-  exists f : IsometryEquiv E3 E3, f '' box q ⊆ box p
-theorem fits_iff_NC (p q : Fin 3 -> Real) (hp : forall i, 0 < p i)
-    (hq : forall i, 0 <= q i) : Fits p q <-> NC p q
+def box (q : Fin 3 → ℝ) : Set E3 := {x | ∀ i, 0 ≤ x i ∧ x i ≤ q i}
+def Fits (p q : Fin 3 → ℝ) : Prop := ∃ f : E3 ≃ᵢ E3, f '' box q ⊆ box p
+theorem fits_iff_NC (p q : Fin 3 → ℝ) (hp : ∀ i, 0 < p i) (hq : ∀ i, 0 ≤ q i) :
+    Fits p q ↔ NC p q
 \end{verbatim}
 Здесь \texttt{E3}~--- евклидово пространство $\R^3$, \texttt{box q}~--- множество точек $x$ с
 $0\le x_i\le q_i$, а \texttt{Fits p q} означает, что некоторая изометрия $f$ пространства $\R^3$
