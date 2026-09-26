@@ -6,7 +6,7 @@ The last column records whether the model's arguments were checked by hand and f
 | # | Date | Model | Verdict | Items flagged | Arguments checked |
 |---|---|---|---|---|---|
 | 1 | 2026-09-26 | DeepSeek (version not recorded) | EQUIVALENT | none (1–7: OK) | yes, all seven correct |
-| 2 | 2026-09-26 | Qwen, presumably (version not recorded) | EQUIVALENT | none (1–7: OK) | yes, all seven correct |
+| 2 | 2026-09-26 | Qwen3.7-Plus | EQUIVALENT | none (1–7: OK) | yes, all seven correct |
 
 ## Run 1 — details
 
