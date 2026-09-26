@@ -1,0 +1,12 @@
+lean/.lake/
+__pycache__/
+*.pyc
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.xdv
+paper/*.synctex.gz
+lean/build.log
