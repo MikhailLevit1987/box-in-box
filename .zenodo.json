@@ -1,0 +1,29 @@
+{
+    "title": "When does a box fit into a box? An explicit criterion with a formal proof",
+    "description": "<p>An explicit necessary and sufficient condition for a rectangular box to fit, after an arbitrary rigid motion, into another rectangular box (a problem posed by Garnett in 1923), together with the analogous criterion for strict fitting. The repository contains the paper (English and Russian), a complete formal proof in Lean 4 / Mathlib, and a reference implementation of the criterion in Python.</p><p>Code: Apache License 2.0. Paper (directory <code>paper/</code>): CC BY 4.0.</p>",
+    "creators": [
+        {
+            "name": "Levit, Mikhail"
+        }
+    ],
+    "upload_type": "software",
+    "access_right": "open",
+    "license": "apache-2.0",
+    "language": "eng",
+    "keywords": [
+        "box in a box",
+        "packing",
+        "rigid motion",
+        "metric geometry",
+        "Lean 4",
+        "Mathlib",
+        "formal proof"
+    ],
+    "related_identifiers": [
+        {
+            "identifier": "https://github.com/MikhailLevit1987/box-in-box",
+            "relation": "isSupplementTo",
+            "scheme": "url"
+        }
+    ]
+}
