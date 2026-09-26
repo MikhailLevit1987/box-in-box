@@ -10,3 +10,4 @@ paper/*.fdb_latexmk
 paper/*.xdv
 paper/*.synctex.gz
 lean/build.log
+paper/build-*.log

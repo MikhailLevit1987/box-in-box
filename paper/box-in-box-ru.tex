@@ -1,0 +1,493 @@
+\documentclass[11pt]{amsart}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\DeclareUnicodeCharacter{2286}{\ensuremath{\subseteq}}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\setlength{\emergencystretch}{3em}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Теорема}[section]
+\newtheorem{lemma}[theorem]{Лемма}
+\newtheorem{proposition}[theorem]{Предложение}
+\newtheorem{corollary}[theorem]{Следствие}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Определение}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Замечание}
+\newtheorem{example}[theorem]{Пример}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Ort}{\mathrm{O}(3)}
+\newcommand{\Fit}{\operatorname{Fit}}
+\newcommand{\NC}{\operatorname{NC}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+
+% amsart переводит заголовок в верхний регистр, что ломает кириллицу; выводим его как есть
+\makeatletter
+\def\@settitle{\begin{center}\baselineskip14\p@\relax\large\bfseries\@title\end{center}}
+\makeatother
+\pagestyle{plain}
+\title{Когда коробка помещается в коробку?\\ Явный критерий с формальным доказательством}
+\author{[Имя автора]}
+\date{\today}
+
+\begin{document}
+
+\begin{abstract}
+Мы даём необходимое и достаточное условие в явном виде для того, чтобы прямоугольный параллелепипед
+с рёбрами $q_1,q_2,q_3\ge 0$ после произвольного движения поместился в прямоугольный параллелепипед
+с рёбрами $p_1,p_2,p_3>0$. Условие представляет собой дизъюнкцию девяти явных проверок, каждая из
+которых состоит из двух плоских тестов, выраженных формулой с одним квадратным корнем. Ключевой
+геометрический факт: если коробка вообще помещается, то она помещается и в положении, в котором одно
+из её рёбер перпендикулярно одной из осей ящика. Мы доказываем его, показывая, что в любом другом
+положении все три ширины коробки можно одновременно уменьшить. Задача поставлена Гарнеттом в 1923
+году; Джеррард и Вецель в 2004 году называли её нерешённой. Главная теорема проверена в системе
+интерактивного доказательства Lean~4 с библиотекой Mathlib.
+\end{abstract}
+
+\maketitle
+
+\section{Введение}
+
+Пусть $P=[0,p_1]\times[0,p_2]\times[0,p_3]$, где $p_i>0$, и $Q=[0,q_1]\times[0,q_2]\times[0,q_3]$,
+где $q_j\ge 0$. Будем говорить, что $Q$ \emph{помещается в} $P$, если $f(Q)\subseteq P$ для
+некоторой изометрии $f$ пространства $\R^3$. Вопрос о том, когда это происходит, поставил
+Ф.~М.~Гарнетт в 1923 году \cite{Garnett1923}; У.~Б.~Карвер \cite{Carver1925} дал частичный ответ,
+приняв без доказательства, что в оптимальном положении все вершины $Q$ лежат на гранях $P$. Плоский
+аналог, прямоугольник в прямоугольнике, решил Карвер в 1957 году \cite{Carver1957} (см. также Вецель
+\cite{Wetzel2000}). Джеррард и Вецель \cite[с.~22]{JerrardWetzel2004} описывают трёхмерный вопрос как
+частный случай <<общей нерешённой задачи о вложении коробок в высших размерностях>>. Из близких
+результатов отметим диск в коробке \cite{AlexanderWetzel2005}, круговой цилиндр вдоль пространственной
+диагонали коробки \cite{JSSW2006}, где критерий <<в духе Поста>> \cite{Post1993} назван желательным и
+нерешённым, и алгоритмы вложения Мартина и Стивенсона \cite{MartinStephenson1989}. Олимпиадная задача
+\cite{Kvant1999} доказывает необходимое условие $q_1+q_2+q_3\le p_1+p_2+p_3$.
+
+В настоящей работе такой критерий дан для коробок. Он является дизъюнкцией явных проверок, подобно
+тому как критерий Поста для треугольника в треугольнике \cite{Post1993} является дизъюнкцией 18
+неравенств.
+
+\subsection*{Критерий}
+Для $x\ge y\ge0$ и $s\ge 0$ положим
+\begin{equation}\label{eq:H}
+H(x,y;s)=\begin{cases}
+y, & x\le s,\\[2pt]
+\min\Bigl(x,\ \dfrac{2xys+(x^2-y^2)\sqrt{x^2+y^2-s^2}}{x^2+y^2}\Bigr), & x>s,
+\end{cases}
+\end{equation}
+а для произвольных $u,v\ge0$ положим $H(u,v;s)=H(\max(u,v),\min(u,v);s)$. По
+лемме~\ref{lem:strip} при $\min(u,v)\le s$ число $H(u,v;s)$ есть наименьшая возможная
+протяжённость вдоль полосы ширины $s$ прямоугольника $u\times v$, поставленного в эту полосу. Для
+$a,b,u,v\ge 0$ положим
+\[
+\Fit(a,b;u,v)\ :\Longleftrightarrow\ \min(u,v)\le a\ \text{ и }\ H(u,v;a)\le b .
+\]
+Это условие означает, что прямоугольник $u\times v$ помещается в прямоугольник $a\times b$
+(замечание~\ref{rem:carver}).
+
+\begin{definition}[Критерий $\NC$]\label{def:NC}
+Пусть $(i,i',i'')$~--- перестановка осей $(1,2,3)$ ящика $P$, а $(j,k,l)$~--- перестановка рёбер
+$(1,2,3)$ коробки $Q$. \emph{Проверка} $\NC_{(i,i',i''),(j,k,l)}$ состоит в том, что
+\[
+\min(q_k,q_l)\le p_i\quad\text{и}\quad \Fit\bigl(p_{i'},p_{i''};\,q_j,\,h^*\bigr),\qquad
+h^*:=H(q_k,q_l;p_i).
+\]
+Условие $\NC(p,q)$ выполнено, если выполнена хотя бы одна проверка. Поскольку $H$ симметрична по
+первым двум аргументам, имеется $9$ вариантов выбора $(i,j)$ и для каждого два порядка осей <<пола>>
+$(i',i'')$.
+\end{definition}
+
+Геометрически проверка описывает положения, в которых ребро $j$ коробки $Q$ горизонтально, то есть
+перпендикулярно оси $i$ ящика $P$ (<<высоте>>). Грань $q_k\times q_l$ при этом стоит в вертикальной
+полосе высоты $p_i$; её след на полу~--- отрезок длины не меньше $h^*$, и прямоугольник
+$q_j\times h^*$ должен поместиться в пол $p_{i'}\times p_{i''}$.
+
+\begin{theorem}[Главная теорема]\label{thm:main}
+Пусть $p_1,p_2,p_3>0$ и $q_1,q_2,q_3\ge 0$. Коробка $Q$ помещается в ящик $P$ тогда и только тогда,
+когда выполнено $\NC(p,q)$.
+\end{theorem}
+
+Достаточность конструктивна (раздел~\ref{sec:suff}): каждая выполненная проверка даёт явный поворот.
+Необходимость опирается на следующую теорему (раздел~\ref{sec:descent}), которая является главным
+новым элементом. Здесь $w_i(R)=\sum_j q_j\abs{R_{ij}}$~--- ширина повёрнутой коробки вдоль оси $i$
+(раздел~\ref{sec:widths}).
+
+\begin{theorem}[Спуск]\label{thm:Z}
+Пусть $q_1,q_2,q_3>0$ и матрица $R\in\Ort$ не имеет нулевых элементов. Тогда существует $R'\in\Ort$,
+для которой $w_i(R')<w_i(R)$ при $i=1,2,3$.
+\end{theorem}
+
+\subsection*{Формальная проверка}
+Теорема~\ref{thm:main} формализована и проверена в Lean~4 с Mathlib; см. раздел~\ref{sec:lean}.
+Формальная формулировка буквально использует приведённые выше формулы; её смысл зависит только от
+определений коробки и вложения.
+
+\section{Сведение к ширинам}\label{sec:widths}
+
+Всякая изометрия $\R^3$ имеет вид $x\mapsto Rx+t$, где $R\in\Ort$ (Мазур--Улам). Столбец $j$
+матрицы $R$~--- направление ребра $j$ перемещённой коробки, а $R_{ij}$~--- косинус угла между этим
+ребром и осью $i$ ящика $P$.
+
+\begin{lemma}\label{lem:widths}
+Пусть $R$~--- произвольная вещественная матрица $3\times3$. Некоторый сдвиг множества $RQ$ лежит в $P$
+тогда и только тогда, когда
+\[
+w_i(R):=\sum_{j=1}^3 q_j\abs{R_{ij}}\le p_i\qquad(i=1,2,3).
+\]
+Следовательно, $Q$ помещается в $P$ тогда и только тогда, когда $w(R)\le p$ для некоторой $R\in\Ort$.
+\end{lemma}
+
+\begin{proof}
+При $x\in Q$ координата $i$ точки $Rx=\sum_j R_{ij}x_j$ пробегает отрезок длины
+$\sum_j q_j\abs{R_{ij}}$, концы которого достигаются в вершинах $Q$. Сдвиги вдоль разных осей
+независимы.
+\end{proof}
+
+То же рассуждение на плоскости показывает, что прямоугольник $u\times v$ помещается в прямоугольник
+$a\times b$ тогда и только тогда, когда $uc+vd\le a$ и $ud+vc\le b$ для некоторых $c,d\ge0$ с
+$c^2+d^2=1$.
+
+\section{Прямоугольник в полосе}\label{sec:strip}
+
+Пусть $x\ge y\ge 0$ и $s\ge0$. Для $c,d\ge0$ с $c^2+d^2=1$ положим $A=xc+yd$ (протяжённость
+повёрнутого прямоугольника $x\times y$ поперёк полосы) и $B=xd+yc$ (его протяжённость вдоль полосы).
+
+\begin{lemma}[Лемма о полосе]\label{lem:strip}
+\begin{enumerate}
+\item[(a)] Если $y\le s$, то существуют $c,d\ge 0$ с $c^2+d^2=1$, $A\le s$ и $B\le H(x,y;s)$.
+\item[(b)] Если $c,d\ge0$, $c^2+d^2=1$ и $A\le s$, то $y\le s$ и $H(x,y;s)\le B$.
+\end{enumerate}
+То же верно для произвольных $u,v\ge0$ вместо $x,y$ с $H(u,v;s)$, $A=uc+vd$, $B=ud+vc$ (при $u<v$
+следует поменять местами $c$ и $d$).
+\end{lemma}
+
+\begin{proof}
+При $x=0$ всё тривиально, поэтому пусть $r=\sqrt{x^2+y^2}>0$ и $\alpha\in[0,\pi/4]$ задан условиями
+$\cos\alpha=x/r$, $\sin\alpha=y/r$. Запишем $(c,d)=(\cos\theta,\sin\theta)$, $\theta\in[0,\pi/2]$.
+Тогда
+\[
+A(\theta)=r\cos(\theta-\alpha),\qquad B(\theta)=r\sin(\theta+\alpha).
+\]
+При $\theta\in[0,\pi/2]$ имеем $\theta-\alpha\in[-\pi/2,\pi/2]$ и $\theta+\alpha\in[0,\pi]$, поэтому
+$A$ и $B$ вогнуты на $[0,\pi/2]$; значит, на любом отрезке они достигают минимума на конце. Кроме того,
+$A(0)=B(\pi/2)=x$ и $A(\pi/2)=B(0)=y$.
+
+По вогнутости $A\ge\min(x,y)=y$, что доказывает первое утверждение (b). Если $x\le s$, то угол
+$\theta=0$ допустим, $B(0)=y$, и всюду $B\ge\min(B(0),B(\pi/2))=y$; это доказывает (a) и (b).
+
+Пусть $y\le s<x$. На $[0,\alpha]$ функция $A$ возрастает от $x$ до $r$, так что там $A>s$; на
+$[\alpha,\pi/2]$ она убывает от $r$ до $y\le s$. Поэтому допустимые углы образуют отрезок
+$[\theta^*,\pi/2]$, где $A(\theta^*)=s$, и минимум вогнутой функции $B$ на нём равен
+$\min(B(\theta^*),B(\pi/2))=\min(B(\theta^*),x)$. Остаётся вычислить $B(\theta^*)$. При
+$\varphi=\theta^*-\alpha\in[0,\pi/2]$ имеем $\cos\varphi=s/r$, $\sin\varphi=\sqrt{r^2-s^2}/r$ и
+\[
+\cos\theta^*=\frac{xs-y\sqrt{r^2-s^2}}{r^2},\qquad
+\sin\theta^*=\frac{ys+x\sqrt{r^2-s^2}}{r^2},\qquad
+B(\theta^*)=\frac{2xys+(x^2-y^2)\sqrt{r^2-s^2}}{r^2}.
+\]
+Итак, $\min\{B:A\le s\}=H(x,y;s)$, откуда следуют (a) (берём конец, на котором достигается минимум)
+и (b).
+\end{proof}
+
+\begin{remark}\label{rem:carver}
+По плоскому варианту леммы~\ref{lem:widths} и лемме~\ref{lem:strip} условие $\Fit(a,b;u,v)$
+выполнено тогда и только тогда, когда прямоугольник $u\times v$ помещается в прямоугольник
+$a\times b$. Карвер \cite{Carver1957} дал другую явную форму того же условия: при $u\ge v$, $a\ge b$,
+$u>a$, $v\le b$ оно имеет вид
+$\bigl(\tfrac{a+b}{u+v}\bigr)^2+\bigl(\tfrac{a-b}{u-v}\bigr)^2\ge 2$. Форма Карвера нами не
+используется. (Численно обе формы совпадают на $2\cdot10^5$ случайных прямоугольниках; см.
+\texttt{tools/box\_fit.py}.)
+\end{remark}
+
+\section{Достаточность}\label{sec:suff}
+
+\begin{proposition}\label{prop:suff}
+Если выполнена какая-либо проверка $\NC(p,q)$, то $Q$ помещается в $P$, причём поворот можно
+выписать явно.
+\end{proposition}
+
+\begin{proof}
+Перенумеровав оси и рёбра (что переставляет строки и столбцы $R$), можно считать, что выполнена
+проверка $\NC_{(1,2,3),(1,2,3)}$: $\min(q_2,q_3)\le p_1$ и $\Fit(p_2,p_3;q_1,h^*)$, где
+$h^*=H(q_2,q_3;p_1)$. По лемме~\ref{lem:strip}(a) существуют $c_1,d_1\ge0$, $c_1^2+d_1^2=1$, с
+\[
+q_2c_1+q_3d_1\le p_1,\qquad q_2d_1+q_3c_1\le h^*,
+\]
+в частности $h^*\ge0$. Применяя лемму~\ref{lem:strip}(a) к прямоугольнику $q_1\times h^*$ в полосе
+ширины $p_2$, получаем $c_2,d_2\ge 0$, $c_2^2+d_2^2=1$, с
+\[
+q_1c_2+h^*d_2\le p_2,\qquad q_1d_2+h^*c_2\le H(q_1,h^*;p_2)\le p_3 .
+\]
+Положим
+\[
+R=\begin{pmatrix}0&c_1&-d_1\\ c_2&-d_1d_2&-c_1d_2\\ d_2&d_1c_2&c_1c_2\end{pmatrix}.
+\]
+Её столбцы $f_1=(0,c_2,d_2)$, $f_2=c_1e_1+d_1n$, $f_3=-d_1e_1+c_1n$, где $n=(0,-d_2,c_2)$,
+ортонормированы, так что $R\in\Ort$. Её ширины равны
+\begin{align*}
+w_1&=q_2c_1+q_3d_1\le p_1,\\
+w_2&=q_1c_2+d_2(q_2d_1+q_3c_1)\le q_1c_2+d_2h^*\le p_2,\\
+w_3&=q_1d_2+c_2(q_2d_1+q_3c_1)\le q_1d_2+c_2h^*\le p_3,
+\end{align*}
+и остаётся применить лемму~\ref{lem:widths}.
+\end{proof}
+
+\section{Положения с горизонтальным ребром}\label{sec:zero}
+
+\begin{proposition}\label{prop:zero}
+Пусть $q\ge0$, $p>0$, и матрица $R\in\Ort$ удовлетворяет условиям $w(R)\le p$ и $R_{ij}=0$ для
+некоторых $i,j$. Тогда выполнено $\NC(p,q)$.
+\end{proposition}
+
+\begin{proof}
+Перенумеровав, считаем $R_{11}=0$. Для ортогональной матрицы $R=(\det R)\operatorname{cof}(R)$ и
+$\det R=\pm1$, поэтому каждое $\abs{R_{ab}}$ равно модулю соответствующего алгебраического
+дополнения. Так как $R_{11}=0$, получаем
+\[
+\abs{R_{22}}=\abs{R_{13}}\abs{R_{31}},\quad \abs{R_{23}}=\abs{R_{12}}\abs{R_{31}},\quad
+\abs{R_{32}}=\abs{R_{13}}\abs{R_{21}},\quad \abs{R_{33}}=\abs{R_{12}}\abs{R_{21}}.
+\]
+Положим $c=\abs{R_{12}}$, $d=\abs{R_{13}}$, $c'=\abs{R_{21}}$, $d'=\abs{R_{31}}$; тогда
+$c^2+d^2=1$ (первая строка) и $c'^2+d'^2=1$ (первый столбец). Обозначив $B:=q_2d+q_3c$, получаем
+\[
+w_1=q_2c+q_3d,\qquad w_2=q_1c'+d'B,\qquad w_3=q_1d'+c'B .
+\]
+Из $w_1\le p_1$ и леммы~\ref{lem:strip}(b) следует $\min(q_2,q_3)\le p_1$ и
+$h^*:=H(q_2,q_3;p_1)\le B$; кроме того, $h^*\ge0$ по лемме~\ref{lem:strip}(a). Значит,
+$q_1c'+d'h^*\le w_2\le p_2$ и $q_1d'+c'h^*\le w_3\le p_3$. Лемма~\ref{lem:strip}(b), применённая к
+прямоугольнику $q_1\times h^*$ в полосе ширины $p_2$ с направлением $(c',d')$, даёт
+$\min(q_1,h^*)\le p_2$ и $H(q_1,h^*;p_2)\le q_1d'+h^*c'\le p_3$, то есть $\Fit(p_2,p_3;q_1,h^*)$.
+Итак, выполнена проверка $\NC_{(1,2,3),(1,2,3)}$.
+\end{proof}
+
+\section{Спуск: доказательство теоремы~\ref{thm:Z}}\label{sec:descent}
+
+Всюду в этом разделе $q_1,q_2,q_3>0$ и $R\in\Ort$ не имеет нулевых элементов. Через $e_1,e_2,e_3$
+обозначен стандартный базис, через $u\cdot v$~--- скалярное произведение, через $u\times v$~---
+векторное.
+
+\subsection{Линеаризация}
+Пусть $s_{ij}=\sgn R_{ij}\in\{\pm1\}$, $g_i=(s_{i1}q_1,s_{i2}q_2,s_{i3}q_3)$ и $a_i=Rg_i\in\R^3$.
+Обозначим $A_{ik}=(a_i)_k$. Тогда $A_{ii}=\sum_j R_{ij}s_{ij}q_j=w_i(R)$. Если $C\in\Ort$ и знаки
+элементов $CR$ совпадают со знаками элементов $R$, то
+\begin{equation}\label{eq:lin}
+w_i(CR)=\sum_j q_j s_{ij}(CR)_{ij}=(Ca_i)_i .
+\end{equation}
+
+\begin{lemma}[B1]\label{lem:B1}
+$\abs{A_{ik}}<A_{kk}$ при $i\neq k$.
+\end{lemma}
+\begin{proof}
+$\abs{A_{ik}}=\abs{\sum_j s_{ij}q_jR_{kj}}\le\sum_jq_j\abs{R_{kj}}=A_{kk}$. Равенство означало бы,
+что все $s_{ij}R_{kj}$ ($q_j>0$, $R_{kj}\ne0$) одного знака, а тогда все произведения
+$R_{ij}R_{kj}$ ненулевые и одного знака, что противоречит ортогональности строк $i$ и $k$.
+\end{proof}
+
+\subsection{Поворот Кэли}
+Для $v\in\R^3$ положим $[v]_\times x=v\times x$ и
+\[
+C(v)=\frac{(1-\abs{v}^2)I+2[v]_\times+2vv^{\mathsf T}}{1+\abs{v}^2}.
+\]
+Это поворот, задаваемый кватернионом $(1,v)$; непосредственно проверяется, что
+$C(v)C(v)^{\mathsf T}=I$. Кроме того, $C(0)=I$ и $C$ непрерывна. Для $a\in\R^3$ положим
+\[
+b_i(a)=a\times e_i,\qquad P_i(a;v)=v_i\,(v\cdot a)-\abs{v}^2a_i,\qquad D_i(a;v)=b_i(a)\cdot v+P_i(a;v).
+\]
+Так как $e_i\cdot(v\times a)=v\cdot(a\times e_i)$, прямое вычисление даёт
+\begin{equation}\label{eq:cay}
+(C(v)a)_i-a_i=\frac{2}{1+\abs{v}^2}\,D_i(a;v).
+\end{equation}
+Заметим, что $P_i(a;\cdot)$~--- квадратичная форма: $P_i(a;tv)=t^2P_i(a;v)$.
+
+\subsection{Спуск вдоль кривой}
+Будем поворачивать вдоль $v(t)=t(h+tz)$ при малых $t>0$. Тогда
+\begin{equation}\label{eq:curve}
+D_i(a;v(t))=t\,b_i(a)\cdot h+t^2\bigl(b_i(a)\cdot z+P_i(a;h+tz)\bigr).
+\end{equation}
+
+\begin{lemma}\label{lem:order}
+Пусть $a,h,z\in\R^3$ и $b=b_i(a)$.
+\begin{enumerate}
+\item[(a)] Если $b\cdot h<0$, либо $b\cdot h=0$ и $b\cdot z+P_i(a;h)<0$, то $D_i(a;v(t))<0$ при
+всех достаточно малых $t>0$.
+\item[(b)] Если $b=0$, $a_i>0$ и все компоненты $z$ ненулевые, то $D_i(a;v(t))<0$ при всех
+достаточно малых $t>0$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) По \eqref{eq:curve} $D_i/t=b\cdot h+t(b\cdot z+P_i(a;h+tz))\to b\cdot h$ при $t\to0^+$; во втором
+случае $D_i/t^2=b\cdot z+P_i(a;h+tz)\to b\cdot z+P_i(a;h)$.
+(b) Условие $b=a\times e_i=0$ означает $a=a_ie_i$; тогда
+$P_i(a;u)=u_i^2a_i-\abs{u}^2a_i=-a_i\sum_{m\ne i}u_m^2$. При малых $t>0$ каждая компонента
+$h_m+tz_m$ вектора $u=h+tz$ ненулевая (при $h_m\ne0$ по непрерывности, при $h_m=0$ потому, что
+$z_m\ne0$). Следовательно, $D_i(a;v(t))=t^2P_i(a;h+tz)<0$.
+\end{proof}
+
+\subsection{Ключевое неравенство}
+
+\begin{lemma}\label{lem:key}
+Пусть $a_1,a_2,a_3\in\R^3$ удовлетворяют условию $\abs{A_{ik}}<A_{kk}$ при $i\ne k$, где
+$A_{ik}=(a_i)_k$. Пусть $\nu\in\R^3$, $\nu\ge0$, имеет не менее двух положительных компонент и
+$\sum_i\nu_i\,b_i(a_i)=0$. Тогда $\sum_i\nu_iP_i(a_i;h)<0$ для любого $h\ne0$.
+\end{lemma}
+
+\begin{proof}
+Так как $a\times e_1=(0,a_3,-a_2)$, $a\times e_2=(-a_3,0,a_1)$, $a\times e_3=(a_2,-a_1,0)$, условие
+$\sum_i\nu_ib_i(a_i)=0$ в точности означает, что
+\[
+\nu_iA_{ik}=\nu_kA_{ki}\qquad(i\ne k).
+\]
+Положим $d_i=\nu_iA_{ii}\ge0$ и $m_{ik}=\nu_iA_{ik}=\nu_kA_{ki}$. Раскрывая скобки и пользуясь
+симметрией, получаем
+\[
+\sum_i\nu_iP_i(a_i;h)=\sum_i\nu_i\Bigl(h_i\sum_kh_kA_{ik}-\abs{h}^2A_{ii}\Bigr)=-\sum_{i<k}B_{ik},
+\qquad B_{ik}=d_ih_k^2+d_kh_i^2-2m_{ik}h_ih_k .
+\]
+По условию
+$m_{ik}^2=\nu_i\nu_kA_{ik}A_{ki}\le\nu_i\nu_k\abs{A_{ik}}\abs{A_{ki}}\le\nu_i\nu_kA_{kk}A_{ii}=d_id_k$,
+причём неравенство строгое при $\nu_i\nu_k>0$.
+
+Каждое $B_{ik}\ge0$: если $d_i=0$, то $m_{ik}=0$ и $B_{ik}=d_kh_i^2$; если $d_i>0$, то
+$d_iB_{ik}=(d_ih_k-m_{ik}h_i)^2+(d_id_k-m_{ik}^2)h_i^2\ge0$.
+
+Некоторое $B_{ik}$ положительно. Выберем $c$ с $h_c\ne0$ и, пользуясь тем, что у $\nu$ две
+положительные компоненты, индекс $i\ne c$ с $\nu_i>0$, так что $d_i>0$. Если $d_c=0$, то
+$m_{ic}=0$ и $B_{ic}=d_ih_c^2>0$. Если $d_c>0$, то $\nu_c>0$, поэтому $m_{ic}^2<d_id_c$, и
+$d_iB_{ic}=(d_ih_c-m_{ic}h_i)^2+(d_id_c-m_{ic}^2)h_i^2$ положительно как при $h_i\ne0$, так и
+при $h_i=0$.
+\end{proof}
+
+\subsection{Выбор кривой}
+Мы используем теорему Моцкина об альтернативах \cite{Motzkin1936,Schrijver1986} в следующей форме:
+для векторов $b_i\in\R^3$ и чисел $c_i$, $i\in K$, либо система $b_i\cdot z<c_i$ ($i\in K$)
+совместна, либо существует $\mu\ge0$, $\mu\ne0$, сосредоточенный на $K$, с $\sum_i\mu_ib_i=0$ и
+$\sum_i\mu_ic_i\le0$.
+
+\begin{lemma}\label{lem:choice}
+Пусть $a_i$ те же, что в линеаризации, $b_i=b_i(a_i)$ и $K=\{i:b_i\ne0\}$. Существуют
+$h,z\in\R^3$, такие что все компоненты $z$ ненулевые и для каждого $i\in K$ либо $b_i\cdot h<0$,
+либо $b_i\cdot h=0$ и $b_i\cdot z+P_i(a_i;h)<0$.
+\end{lemma}
+
+\begin{proof}
+Применим теорему Моцкина с $c=0$. Если система $b_i\cdot h<0$, $i\in K$, имеет решение $h$, возьмём
+$z=(1,1,1)$. Иначе существует $\mu\ne0$, $\mu\ge0$, с $\sum\mu_ib_i=0$ (напомним, что $b_i=0$ при
+$i\notin K$), поэтому матрица со строками $b_1,b_2,b_3$ вырождена и найдётся $h\ne0$ с
+$b_i\cdot h=0$ для всех $i$. Применим теорему Моцкина ещё раз, с $c_i=-P_i(a_i;h)$.
+
+Если существует $z_0$ с $b_i\cdot z_0+P_i(a_i;h)<0$ при $i\in K$, то $z=z_0+\delta(1,1,1)$ при малом
+$\delta>0$ сохраняет эти строгие неравенства и имеет ненулевые компоненты.
+
+Иначе существует $\nu\ge0$, $\nu\ne0$, сосредоточенный на $K$, с $\sum\nu_ib_i=0$ и
+$\sum\nu_iP_i(a_i;h)\ge0$. Если бы у $\nu$ была лишь одна положительная компонента $\nu_i$, то из
+$\nu_ib_i=0$ следовало бы $b_i=0$ вопреки $i\in K$. Значит, у $\nu$ две положительные компоненты, и
+лемма~\ref{lem:key} (её условие выполнено по лемме~\ref{lem:B1}) даёт $\sum\nu_iP_i(a_i;h)<0$~---
+противоречие.
+\end{proof}
+
+\subsection{Доказательство теоремы~\ref{thm:Z}}
+Возьмём $h,z$ из леммы~\ref{lem:choice} и положим $R(t)=C(v(t))R$. При всех достаточно малых $t>0$:
+\begin{itemize}
+\item $R(t)\in\Ort$ и знаки её элементов совпадают со знаками элементов $R$, так как $R(t)\to R$, а
+у $R$ нет нулевых элементов;
+\item $D_i(a_i;v(t))<0$ для каждого $i$: при $i\in K$ по лемме~\ref{lem:order}(a), при $i\notin K$~---
+по лемме~\ref{lem:order}(b), поскольку $(a_i)_i=w_i(R)>0$.
+\end{itemize}
+По \eqref{eq:lin} и \eqref{eq:cay}
+$w_i(R(t))-w_i(R)=(C(v(t))a_i)_i-(a_i)_i=\frac{2}{1+\abs{v(t)}^2}D_i(a_i;v(t))<0$ при $i=1,2,3$.
+\qed
+
+\section{Доказательство главной теоремы}\label{sec:proof}
+
+Достаточность~--- это предложение~\ref{prop:suff}. Для необходимости, в силу
+предложения~\ref{prop:zero}, достаточно показать: \emph{если $Q$ помещается в $P$, то $w(R)\le p$
+для некоторой $R\in\Ort$ с нулевым элементом.}
+
+\emph{Случай $q_1,q_2,q_3>0$.} Функция $F(R)=\max_iw_i(R)/p_i$ непрерывна на компактной группе
+$\Ort$ и достигает минимума в некоторой точке $R^*$; поскольку $Q$ помещается, $F(R^*)\le1$, то есть
+$w(R^*)\le p$. Если бы у $R^*$ не было нулевых элементов, теорема~\ref{thm:Z} дала бы $R'$ с
+$w_i(R')<w_i(R^*)$ для всех $i$, а значит, $F(R')<F(R^*)$. Следовательно, у $R^*$ есть нулевой
+элемент.
+
+\emph{Общий случай $q\ge0$.} Пусть $w(R_0)\le p$, и предположим, что ни одна $R$ из компактного
+множества $Z=\{R\in\Ort:\ R_{ij}=0\text{ для некоторых }i,j\}$ не удовлетворяет условию $w(R)\le p$.
+Тогда непрерывная функция $\varphi(R)=\max_i(w_i(R)-p_i)$ положительна на $Z$ и имеет на нём минимум
+$m>0$. Пусть $\delta=m/6$, $q'=q+\delta(1,1,1)>0$ и $p'=p+3\delta(1,1,1)$. Так как
+$\sum_j\abs{R_{ij}}\le3$ при $R\in\Ort$, имеем
+$w_i(R_0;q')=w_i(R_0;q)+\delta\sum_j\abs{(R_0)_{ij}}\le p_i'$, то есть $q'$ помещается в $p'$. По
+предыдущему случаю найдётся $R_1\in Z$ с $w(R_1;q')\le p'$, откуда
+$w_i(R_1;q)\le w_i(R_1;q')\le p_i+3\delta$ и $\varphi(R_1)\le3\delta<m$~--- противоречие. \qed
+
+\section{Примеры}\label{sec:examples}
+
+\begin{example}[Стержень]
+Пусть $q=(L,0,0)$. Возьмём проверку с высотой $i=1$, горизонтальным ребром $j=2$ и $(k,l)=(1,3)$.
+Тогда $h^*=H(L,0;p_1)=\sqrt{\max(L^2-p_1^2,0)}$, и условие $\Fit(p_2,p_3;0,h^*)$ сводится к
+$h^{*2}\le p_2^2+p_3^2$. Итак, проверка выполнена тогда и только тогда, когда
+$L^2\le p_1^2+p_2^2+p_3^2$; обратно, более длинный стержень поместиться не может, поскольку
+$\sqrt{p_1^2+p_2^2+p_3^2}$~--- диаметр $P$. Стержень помещается ровно по пространственной диагонали,
+и в этом положении есть ребро (нулевой длины), перпендикулярное одной из осей.
+\end{example}
+
+\begin{example}[Квадрат в кубе]
+Наибольший квадрат, помещающийся в единичный куб, имеет сторону $a=3\sqrt2/4$ (Нивланд; опубликовано
+ван Свинденом \cite{vanSwinden1816}). Для $q=(a,a,0)$ и $p=(1,1,1)$ возьмём $j=1$, $(k,l)=(2,3)$:
+$h^*=H(a,0;1)=\sqrt{a^2-1}=\sqrt2/4$. Для пола $x^2=9/8$, $y^2=1/8$, $x^2+y^2=5/4$,
+$\sqrt{x^2+y^2-1}=1/2$, $2xy=3/4$, так что вторая ветвь \eqref{eq:H} равна
+$(3/4+1\cdot\tfrac12)/(5/4)=1$ и $H(a,h^*;1)=\min(a,1)=1$: проверка выполнена с равенством, в
+согласии с результатом Нивланда.
+\end{example}
+
+\begin{example}[Классических необходимых условий недостаточно]
+Для $p=(1,1,1)$ и $q=(1{,}1;\,1{,}1;\,0{,}01)$ сумма рёбер, сумма квадратов рёбер, площадь
+поверхности и объём у $Q$ меньше, однако $Q$ не помещается: её грань $1{,}1\times1{,}1$ дала бы в
+кубе квадрат со стороной больше $3\sqrt2/4$.
+\end{example}
+
+\section{Формальная проверка}\label{sec:lean}
+
+Сопровождающий репозиторий содержит формализацию теоремы~\ref{thm:main} в Lean~4 (Lean
+v4.34.0-rc2, Mathlib), около 1400 строк в шести файлах:
+\begin{itemize}
+\item \texttt{Reduction.lean}, \texttt{Statement.lean}: определения, лемма~\ref{lem:widths} (через
+теорему Мазура--Улама), лемма~\ref{lem:strip}(a), предложение~\ref{prop:suff};
+\item \texttt{ZeroEntry.lean}: лемма~\ref{lem:strip}(b) (рассуждением с хордой вместо вогнутости),
+предложение~\ref{prop:zero};
+\item \texttt{Motzkin.lean}: теорема об альтернативах (через отделимость по Хану--Банаху);
+\item \texttt{Descent.lean}: раздел~\ref{sec:descent};
+\item \texttt{Necessity.lean}: раздел~\ref{sec:proof} и главная теорема \texttt{fits\_iff\_NC}.
+\end{itemize}
+Формулировка и два определения, от которых зависит её смысл, выглядят так (символы Unicode исходного
+текста заменены на ASCII):
+\begin{verbatim}
+def box (q : Fin 3 -> Real) : Set E3 := {x | forall i, 0 <= x i /\ x i <= q i}
+def Fits (p q : Fin 3 -> Real) : Prop :=
+  exists f : IsometryEquiv E3 E3, f '' box q ⊆ box p
+theorem fits_iff_NC (p q : Fin 3 -> Real) (hp : forall i, 0 < p i)
+    (hq : forall i, 0 <= q i) : Fits p q <-> NC p q
+\end{verbatim}
+Здесь \texttt{E3}~--- евклидово пространство $\R^3$, \texttt{box q}~--- множество точек $x$ с
+$0\le x_i\le q_i$, а \texttt{Fits p q} означает, что некоторая изометрия $f$ пространства $\R^3$
+переводит \texttt{box q} внутрь \texttt{box p}. Критерий \texttt{NC} дословно совпадает с
+определением~\ref{def:NC} (с индексами $0,1,2$). Команда \texttt{\#print axioms Boxes.fits\_iff\_NC}
+выдаёт только стандартные аксиомы \texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}.
+
+\begin{thebibliography}{99}
+\bibitem{AlexanderWetzel2005} R.~Alexander, J.~E.~Wetzel, Wafer in a box, \emph{Math. Mag.} 78 (2005) 214--220.
+\bibitem{Carver1925} W.~B.~Carver, Solution of Problem 3036, \emph{Amer. Math. Monthly} 32 (1925) 47--49.
+\bibitem{Carver1957} W.~B.~Carver, Solution of Problem E1225, \emph{Amer. Math. Monthly} 64 (1957) 114--116.
+\bibitem{Garnett1923} F.~M.~Garnett, Problem 3036, \emph{Amer. Math. Monthly} 30 (1923) 337.
+\bibitem{JerrardWetzel2004} R.~P.~Jerrard, J.~E.~Wetzel, Prince Rupert's rectangles, \emph{Amer. Math. Monthly} 111 (2004) 22--31.
+\bibitem{JSSW2006} R.~Jerrard, J.~Schneider, R.~Smallberg, J.~Wetzel, Straw in a box, \emph{College Math. J.} 37 (2006) 93--102.
+\bibitem{Kvant1999} Задача М1687 (Турнир городов, 1998), \emph{Квант}, 1999, №~6, с.~16.
+\bibitem{MartinStephenson1989} R.~R.~Martin, P.~C.~Stephenson, Containment algorithms for objects in rectangular boxes, in: \emph{Theory and Practice of Geometric Modeling}, Springer, 1989, 307--325.
+\bibitem{Motzkin1936} T.~S.~Motzkin, \emph{Beitr\"age zur Theorie der linearen Ungleichungen}, Dissertation, Basel, 1936.
+\bibitem{Post1993} K.~A.~Post, Triangle in a triangle: on a problem of Steinhaus, \emph{Geom. Dedicata} 45 (1993) 201--225.
+\bibitem{Schrijver1986} A.~Schrijver, \emph{Theory of Linear and Integer Programming}, Wiley, 1986.
+\bibitem{vanSwinden1816} J.~H.~van Swinden, \emph{Grondbeginsels der Meetkunde}, 2nd ed., Amsterdam, 1816.
+\bibitem{Wetzel2000} J.~E.~Wetzel, Rectangles in rectangles, \emph{Math. Mag.} 73 (2000) 204--211.
+\end{thebibliography}
+
+\end{document}
