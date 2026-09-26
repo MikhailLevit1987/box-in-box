@@ -82,3 +82,8 @@ python tools/box_fit.py --selftest
 
 Floating-point comparisons are exact only in exact arithmetic; near the boundary rounding may flip
 the answer.
+
+## License
+
+Code (`lean/`, `tools/`, `verification/`): [Apache License 2.0](LICENSE), the same as Mathlib.
+Paper (`paper/`): [Creative Commons Attribution 4.0 International](paper/LICENSE).
