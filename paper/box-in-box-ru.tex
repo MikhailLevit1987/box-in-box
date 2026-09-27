@@ -239,11 +239,13 @@ B(\theta^*)=\frac{2xys+(x^2-y^2)\sqrt{r^2-s^2}}{r^2}.
 \begin{remark}\label{rem:carver}
 По плоскому варианту леммы~\ref{lem:widths} и лемме~\ref{lem:strip} условие $\Fit(a,b;u,v)$
 выполнено тогда и только тогда, когда прямоугольник $u\times v$ помещается в прямоугольник
-$a\times b$. Карвер \cite{Carver1957} дал другую явную форму того же условия: при $u\ge v$, $a\ge b$,
-$u>a$, $v\le b$ оно имеет вид
-$\bigl(\tfrac{a+b}{u+v}\bigr)^2+\bigl(\tfrac{a-b}{u-v}\bigr)^2\ge 2$. Форма Карвера нами не
-используется. (Численно обе формы совпадают на $2\cdot10^5$ случайных прямоугольниках; см.
-\texttt{tools/box\_fit.py}.)
+$a\times b$. Это условие Карвера \cite{Carver1957}: при $u\ge v$, $a\ge b$ он даёт критерий
+<<$u\le a$ и $v\le b$, или $u>a$ и $b\ge\bigl(2uva+(u^2-v^2)\sqrt{u^2+v^2-a^2}\bigr)/(u^2+v^2)$>>, а
+последнее неравенство при $u>a$ и есть $H(u,v;a)\le b$. Наша запись отличается лишь тем, что не
+требует упорядочивать стороны. Вецель \cite[теорема~1]{Wetzel2000} приводит равносильную форму
+$\bigl(\tfrac{a+b}{u+v}\bigr)^2+\bigl(\tfrac{a-b}{u-v}\bigr)^2\ge 2$ (при $u>a$, $v\le b$), которая
+восходит к уравнению вписанного прямоугольника у Данкеля \cite{Dunkel1920}. (Численно $\Fit$ и форма
+Вецеля совпадают на $2\cdot10^5$ случайных прямоугольниках; см. \texttt{tools/box\_fit.py}.)
 \end{remark}
 
 \section{Достаточность}\label{sec:suff}
@@ -491,6 +493,16 @@ $(3/4+1\cdot\tfrac12)/(5/4)=1$ и $H(a,h^*;1)=\min(a,1)=1$: проверка в�
 согласии с результатом Нивланда.
 \end{example}
 
+\begin{example}[Прямоугольник в кубе]
+Джеррард и Вецель \cite[теорема~5]{JerrardWetzel2004} нашли наибольший прямоугольник $L\times\lambda L$
+($0<\lambda\le1$), помещающийся в единичный куб: $L_{\max}=3/\bigl(\sqrt{3-\lambda^2}+\sqrt2\,\lambda\bigr)$
+при $\lambda<1-\sqrt2/2$, $L_{\max}=\sqrt2$ при $1-\sqrt2/2\le\lambda\le\sqrt2/2$ и
+$L_{\max}=3/\bigl(\sqrt2+\sqrt{3\lambda^2-1}\bigr)$ при $\lambda>\sqrt2/2$ (при $\lambda=1$ это квадрат
+Нивланда). Это частный случай теоремы~\ref{thm:main}: $q=(L,\lambda L,0)$, $p=(1,1,1)$. Наибольшее $L$,
+при котором выполнено $\NC$, совпадает с этой формулой: на $2000$ случайных $\lambda$ расхождение не
+превышает $5\cdot10^{-16}$ (численная, а не формальная проверка).
+\end{example}
+
 \begin{example}[Классических необходимых условий недостаточно]
 Для $p=(1,1,1)$ и $q=(1{,}1;\,1{,}1;\,0{,}01)$ сумма рёбер, сумма квадратов рёбер, площадь
 поверхности и объём у $Q$ меньше, однако $Q$ не помещается: её грань $1{,}1\times1{,}1$ дала бы в
@@ -585,6 +597,7 @@ $0\le x_i\le q_i$, а \texttt{Fits p q} означает, что некотор�
 \bibitem{AlexanderWetzel2005} R.~Alexander, J.~E.~Wetzel, Wafer in a box, \emph{Math. Mag.} 78 (2005) 214--220.
 \bibitem{Carver1925} W.~B.~Carver, Solution of Problem 3036, \emph{Amer. Math. Monthly} 32 (1925) 47--49.
 \bibitem{Carver1957} W.~B.~Carver, Solution of Problem E1225, \emph{Amer. Math. Monthly} 64 (1957) 114--116.
+\bibitem{Dunkel1920} O.~Dunkel, Solution I of Problem 416, \emph{Amer. Math. Monthly} 27 (1920) 327--330.
 \bibitem{Garnett1923} F.~M.~Garnett, Problem 3036, \emph{Amer. Math. Monthly} 30 (1923) 337.
 \bibitem{JerrardWetzel2004} R.~P.~Jerrard, J.~E.~Wetzel, Prince Rupert's rectangles, \emph{Amer. Math. Monthly} 111 (2004) 22--31.
 \bibitem{JSSW2006} R.~Jerrard, J.~Schneider, R.~Smallberg, J.~Wetzel, Straw in a box, \emph{College Math. J.} 37 (2006) 93--102.

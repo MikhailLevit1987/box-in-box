@@ -11,7 +11,7 @@ Floating-point caveat: the comparisons below are exact only in exact arithmetic.
 Usage:
     python box_fit.py P1 P2 P3 Q1 Q2 Q3          # does box Q fit into box P?
     python box_fit.py --place P1 P2 P3 Q1 Q2 Q3  # and if so, an explicit placement x -> R x + t
-    python box_fit.py --selftest                 # examples, cross-check with Carver's 2D formula,
+    python box_fit.py --selftest                 # examples, cross-check with Wetzel's 2D form,
                                                  # verification of the placements
 """
 import itertools
@@ -142,8 +142,9 @@ def nc_strict(p, q):
     return False
 
 
-def carver(a, b, u, v):
-    """Carver's closed-form 2D criterion (independent cross-check of fit2, not used by nc)."""
+def wetzel(a, b, u, v):
+    """Wetzel's form of Carver's 2D criterion (Math. Mag. 73 (2000), Theorem 1); an independent
+    cross-check of fit2, not used by nc. Carver's own form (AMM 64 (1957), (4)) is fit2 itself."""
     a, b = max(a, b), min(a, b)
     x, y = max(u, v), min(u, v)
     if x <= a and y <= b:
@@ -190,10 +191,10 @@ def selftest():
         a, b, u, v = (rnd.uniform(0.01, 2) for _ in range(4))
         if abs(max(u, v) - max(a, b)) < 1e-9:
             continue
-        c = carver(a, b, u, v)
+        c = wetzel(a, b, u, v)
         if fit2(a, b, u, v) != c or fit2(b, a, u, v) != c:
             mismatches += 1
-    print(f"fit2 (both orientations) vs Carver on {n} random rectangles: {mismatches} mismatches")
+    print(f"fit2 (both orientations) vs Wetzel's form on {n} random rectangles: {mismatches} mismatches")
     fast_bad = 0
     for _ in range(200000):
         p = [rnd.uniform(0.5, 3) for _ in range(3)]

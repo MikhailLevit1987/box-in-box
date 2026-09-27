@@ -232,10 +232,14 @@ Thus $\min\{B:A\le s\}=H(x,y;s)$, which gives (a) (take the minimizing endpoint)
 
 \begin{remark}\label{rem:carver}
 By the planar version of Lemma~\ref{lem:widths} and Lemma~\ref{lem:strip}, $\Fit(a,b;u,v)$ holds if
-and only if the $u\times v$ rectangle fits into the $a\times b$ rectangle. Carver \cite{Carver1957}
-gave another closed form of the same condition: for $u\ge v$, $a\ge b$, $u>a$, $v\le b$ it reads
-$\bigl(\tfrac{a+b}{u+v}\bigr)^2+\bigl(\tfrac{a-b}{u-v}\bigr)^2\ge 2$. We do not use Carver's form.
-(Numerically the two forms agree on $2\cdot10^5$ random rectangles; see \texttt{tools/box\_fit.py}.)
+and only if the $u\times v$ rectangle fits into the $a\times b$ rectangle. This is Carver's condition
+\cite{Carver1957}: for $u\ge v$, $a\ge b$ his criterion reads ``$u\le a$ and $v\le b$, or $u>a$ and
+$b\ge\bigl(2uva+(u^2-v^2)\sqrt{u^2+v^2-a^2}\bigr)/(u^2+v^2)$'', and for $u>a$ the last inequality is
+exactly $H(u,v;a)\le b$. Our form differs only in that the sides need not be ordered. Wetzel
+\cite[Theorem~1]{Wetzel2000} gives the equivalent form
+$\bigl(\tfrac{a+b}{u+v}\bigr)^2+\bigl(\tfrac{a-b}{u-v}\bigr)^2\ge 2$ (for $u>a$, $v\le b$), which goes back
+to Dunkel's equation of an inscribed rectangle \cite{Dunkel1920}. (Numerically $\Fit$ and Wetzel's form
+agree on $2\cdot10^5$ random rectangles; see \texttt{tools/box\_fit.py}.)
 \end{remark}
 
 \section{Sufficiency}\label{sec:suff}
@@ -470,6 +474,16 @@ $2xy=3/4$, so the second branch of \eqref{eq:H} equals $(3/4+1\cdot\tfrac12)/(5/
 $H(a,h^*;1)=\min(a,1)=1$: the check holds with equality, in accordance with Nieuwland's result.
 \end{example}
 
+\begin{example}[Rectangle in a cube]
+Jerrard and Wetzel \cite[Theorem~5]{JerrardWetzel2004} found the largest $L\times\lambda L$ rectangle
+($0<\lambda\le1$) that fits into the unit cube: $L_{\max}=3/\bigl(\sqrt{3-\lambda^2}+\sqrt2\,\lambda\bigr)$ for
+$\lambda<1-\sqrt2/2$, $L_{\max}=\sqrt2$ for $1-\sqrt2/2\le\lambda\le\sqrt2/2$, and
+$L_{\max}=3/\bigl(\sqrt2+\sqrt{3\lambda^2-1}\bigr)$ for $\lambda>\sqrt2/2$ (for $\lambda=1$ this is Nieuwland's
+square). This is a special case of Theorem~\ref{thm:main}: $q=(L,\lambda L,0)$, $p=(1,1,1)$. The largest $L$
+for which $\NC$ holds agrees with this formula: on $2000$ random values of $\lambda$ the discrepancy is at
+most $5\cdot10^{-16}$ (a numerical, not a formal, check).
+\end{example}
+
 \begin{example}[Classical necessary conditions are not sufficient]
 For $p=(1,1,1)$ and $q=(1.1,1.1,0.01)$ the sums of edges, of squared edges, the surface areas and the
 volumes are all smaller for $Q$, yet $Q$ does not fit: its $1.1\times1.1$ face would give a square
@@ -564,6 +578,7 @@ $0,1,2$). The command \texttt{\#print axioms Boxes.fits\_iff\_NC} reports only t
 \bibitem{AlexanderWetzel2005} R.~Alexander, J.~E.~Wetzel, Wafer in a box, \emph{Math. Mag.} 78 (2005) 214--220.
 \bibitem{Carver1925} W.~B.~Carver, Solution of Problem 3036, \emph{Amer. Math. Monthly} 32 (1925) 47--49.
 \bibitem{Carver1957} W.~B.~Carver, Solution of Problem E1225, \emph{Amer. Math. Monthly} 64 (1957) 114--116.
+\bibitem{Dunkel1920} O.~Dunkel, Solution I of Problem 416, \emph{Amer. Math. Monthly} 27 (1920) 327--330.
 \bibitem{Garnett1923} F.~M.~Garnett, Problem 3036, \emph{Amer. Math. Monthly} 30 (1923) 337.
 \bibitem{JerrardWetzel2004} R.~P.~Jerrard, J.~E.~Wetzel, Prince Rupert's rectangles, \emph{Amer. Math. Monthly} 111 (2004) 22--31.
 \bibitem{JSSW2006} R.~Jerrard, J.~Schneider, R.~Smallberg, J.~Wetzel, Straw in a box, \emph{College Math. J.} 37 (2006) 93--102.
