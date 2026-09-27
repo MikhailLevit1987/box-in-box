@@ -1,4 +1,4 @@
-\documentclass[11pt]{amsart}
+\documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 % Unicode symbols of the Lean source, so that it can be quoted verbatim
@@ -13,6 +13,7 @@
 \DeclareUnicodeCharacter{1D62}{\ensuremath{_i}}
 \DeclareUnicodeCharacter{2194}{\ensuremath{\leftrightarrow}}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{tikz}
 \usepackage[margin=1in]{geometry}
 \setlength{\emergencystretch}{3em}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
@@ -35,11 +36,14 @@
 \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 \DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
 
-\title[When does a box fit into a box?]{When does a box fit into a box?\\ An explicit criterion with a formal proof}
+\title{When does a box fit into a box?\\ An explicit criterion with a formal proof}
 \author{Mikhail Levit}
-\date{September 26, 2026}
+\date{September 27, 2026}
 
 \begin{document}
+
+
+\maketitle
 
 \begin{abstract}
 We give a necessary and sufficient condition, in closed form, for a rectangular box with edges
@@ -52,10 +56,11 @@ decreased simultaneously. The problem was posed by Garnett in 1923 and was descr
 Wetzel in 2004 as an instance of a general unsolved fitting problem for boxes in
 higher dimensions. The main theorem has been verified in the Lean~4 proof assistant with the Mathlib
 library, together with the analogous criterion for strict fitting (without touching the container),
-which is not obtained by merely making the inequalities strict.
+which is not obtained by merely making the inequalities strict. The criterion is constructive: when
+the box fits, it yields an explicit rotation. An implementation decides fitting and produces a
+placement in about $20$ microseconds, three to four orders of magnitude faster than a numerical
+search over rotations, which moreover cannot certify that a box does not fit.
 \end{abstract}
-
-\maketitle
 
 \section{Introduction}
 
@@ -106,7 +111,37 @@ there are $9$ choices of $(i,j)$ and two orders of the ``floor'' axes $(i',i'')$
 Geometrically, the check describes positions in which edge $j$ of $Q$ is horizontal, i.e.\
 perpendicular to axis $i$ of $P$ (the ``height''). The face $q_k\times q_l$ then stands in the vertical
 strip of height $p_i$; its orthogonal projection onto the floor is a segment of length at least $h^*$, and the rectangle
-$q_j\times h^*$ must fit into the floor $p_{i'}\times p_{i''}$.
+$q_j\times h^*$ must fit into the floor $p_{i'}\times p_{i''}$ (Figure~\ref{fig:box}).
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[line join=round]
+\fill[black!6] (0.000,0.000) -- (3.539,1.163) -- (1.115,2.788) -- (-2.424,1.625) -- cycle;
+\fill[black!18] (-0.644,0.432) -- (-0.327,0.401) -- (0.866,0.285) -- (1.778,2.344) -- (0.267,2.491) -- cycle;
+\draw[black!60] (0.000,0.000) -- (0.000,1.695);
+\draw[black!60] (0.000,0.000) -- (-2.424,1.625);
+\draw[black!60] (0.000,0.000) -- (3.539,1.163);
+\draw[black!60] (0.000,1.695) -- (-2.424,3.320);
+\draw[black!60] (0.000,1.695) -- (3.539,2.859);
+\draw[black!60] (-2.424,1.625) -- (-2.424,3.320);
+\draw[densely dashed, black!45] (-2.424,1.625) -- (1.115,2.788);
+\draw[black!60] (-2.424,3.320) -- (1.115,4.484);
+\draw[black!60] (3.539,1.163) -- (3.539,2.859);
+\draw[densely dashed, black!45] (3.539,1.163) -- (1.115,2.788);
+\draw[black!60] (3.539,2.859) -- (1.115,4.484);
+\draw[densely dashed, black!45] (1.115,2.788) -- (1.115,4.484);
+\filldraw[fill=blue!22, draw=blue!50!black, fill opacity=0.9] (1.778,2.551) -- (0.585,4.156) -- (0.267,3.980) -- (1.461,2.375) -- cycle;
+\filldraw[fill=blue!35, draw=blue!50!black, fill opacity=0.9] (0.866,0.492) -- (1.778,2.551) -- (1.461,2.375) -- (0.549,0.316) -- cycle;
+\filldraw[fill=blue!12, draw=blue!50!black, fill opacity=0.9] (0.549,0.316) -- (1.461,2.375) -- (0.267,3.980) -- (-0.644,1.920) -- cycle;
+\filldraw[fill=blue!12, draw=blue!50!black, fill opacity=0.9] (0.866,0.492) -- (1.778,2.551) -- (0.585,4.156) -- (-0.327,2.096) -- cycle;
+\filldraw[fill=blue!35, draw=blue!50!black, fill opacity=0.9] (-0.327,2.096) -- (0.585,4.156) -- (0.267,3.980) -- (-0.644,1.920) -- cycle;
+\filldraw[fill=blue!22, draw=blue!50!black, fill opacity=0.9] (0.866,0.492) -- (-0.327,2.096) -- (-0.644,1.920) -- (0.549,0.316) -- cycle;
+\draw[black!60] (0.000,0.000) -- (0.000,1.695);
+\draw[black!60] (0.000,1.695) -- (-2.424,3.320);
+\draw[black!60] (0.000,1.695) -- (3.539,2.859);
+\end{tikzpicture}
+\caption{A box $2.8\times1.3\times0.25$ in a container of height $1.2$ with floor $2.7\times2.64$, placed as described by one of the checks of the criterion: the long edge is horizontal, the face $1.3\times0.25$ is tilted in the vertical strip, and the orthogonal projection of the box onto the floor (the shadow) is a $2.8\times h^*$ rectangle rotated in the floor. The rotation is computed as in the proof of Proposition~\ref{prop:suff}.}\label{fig:box}
+\end{figure}
 
 \begin{theorem}[Main theorem]\label{thm:main}
 Let $p_1,p_2,p_3>0$ and $q_1,q_2,q_3\ge 0$. The box $Q$ fits into the box $P$ if and only if
@@ -437,6 +472,26 @@ For $p=(1,1,1)$ and $q=(1.1,1.1,0.01)$ the sums of edges, of squared edges, the 
 volumes are all smaller for $Q$, yet $Q$ does not fit: its $1.1\times1.1$ face would give a square
 larger than $3\sqrt2/4$ in the cube.
 \end{example}
+
+\section{Computation}\label{sec:computation}
+
+The criterion consists of at most $36$ evaluations of formula~\eqref{eq:H} and comparisons, so it takes
+constant time. When a check holds, the proof of Proposition~\ref{prop:suff} gives the rotation
+explicitly: two angles from Lemma~\ref{lem:strip}(a), one for the face in the vertical strip and one
+for the rectangle on the floor. The reference implementation \texttt{tools/box\_fit.py} in the
+repository (Section~\ref{sec:lean}) returns a rotation matrix $R$ with $\det R=1$ and a translation
+$t$ such that $x\mapsto Rx+t$ maps $Q$ into $P$; its self-test verifies about $2\cdot10^4$ random
+placements (orthogonality of $R$ and all vertices inside $P$).
+
+For comparison we used a numerical search that minimises $\max_iw_i(R)/p_i$ over rotations by the
+Nelder--Mead method from random starts and answers ``fits'' when some start reaches a value $\le1$.
+On $200$ random pairs near the boundary (the box scaled by a factor $1\pm e$ from the largest fitting
+size, $10^{-4}\le e\le10^{-2}$) the criterion takes about $24$ microseconds per pair and the explicit
+placement about $20$ microseconds (Python, one core of a desktop computer), while the numerical
+search takes $78$, $228$ and $517$ milliseconds per pair with $5$, $20$ and $50$ starts, i.e.\ it is
+$3\cdot10^3$ to $2\cdot10^4$ times slower, and gives $27$, $5$ and $0$ wrong answers respectively. All
+its errors are ``does not fit'' for boxes that fit: a numerical search can confirm that a box fits, but
+it cannot prove that it does not. The script is \texttt{tools/benchmark.py}.
 
 \section{Strict fitting}\label{sec:strict}
 

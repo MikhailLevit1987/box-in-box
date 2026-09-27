@@ -78,9 +78,17 @@ i.e. no `sorryAx`. The meaning of the theorem depends only on the definitions `b
 ## Using the reference implementation
 
 ```sh
-python tools/box_fit.py 8 4 3  9.43 0 0     # a rod of length 9.43 into an 8 × 4 × 3 box → fits
+python tools/box_fit.py 8 4 3  9.43 0 0             # a rod of length 9.43 into an 8 × 4 × 3 box → fits
+python tools/box_fit.py --place 1.2 2.7 2.64  2.8 1.3 0.25   # the placement: angles, R, t, vertices
 python tools/box_fit.py --selftest
+python tools/benchmark.py                           # timing versus a numerical search (numpy, scipy)
 ```
+
+`--place` returns a rotation `R` (det R = 1) and a translation `t` such that `x ↦ R x + t` maps the
+box `q` into the box `p`; it is the construction from the proof of sufficiency. The criterion takes
+about 20–25 µs per pair in Python, the placement about 20 µs; a multi-start numerical search over
+rotations is 3·10³–2·10⁴ times slower on pairs near the boundary and can wrongly answer "does not fit"
+(section "Computation" of the paper).
 
 Floating-point comparisons are exact only in exact arithmetic; near the boundary rounding may flip
 the answer.
