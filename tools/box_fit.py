@@ -100,6 +100,23 @@ def place(p, q):
     return None
 
 
+def nc_fast(p, q):
+    """Criterion NC with only the 9 essentially different checks (same answer as nc).
+
+    nc runs through all 36 pairs of permutations, like the Lean definition.  A check depends only on
+    the height axis i and the horizontal edge j: H is symmetric in its first two arguments, and
+    Fit(a, b; u, v) and Fit(b, a; u, v) both say that the u x v rectangle fits into the a x b one
+    (Remark 3.2), so one order of the floor axes suffices.
+    """
+    for i in range(3):
+        a, b = p[(i + 1) % 3], p[(i + 2) % 3]
+        for j in range(3):
+            u, v = q[(j + 1) % 3], q[(j + 2) % 3]
+            if min(u, v) <= p[i] and fit2(a, b, q[j], strip_h(u, v, p[i])):
+                return True
+    return False
+
+
 def strip_h_strict(u, v, s):
     """Strict version of strip_h (Lean: stripHs). Note the branch `x < s`, not `x <= s`."""
     x, y = max(u, v), min(u, v)
@@ -174,6 +191,14 @@ def selftest():
         if fit2(a, b, u, v) != c or fit2(b, a, u, v) != c:
             mismatches += 1
     print(f"fit2 (both orientations) vs Carver on {n} random rectangles: {mismatches} mismatches")
+    fast_bad = 0
+    for _ in range(200000):
+        p = [rnd.uniform(0.5, 3) for _ in range(3)]
+        q = [rnd.uniform(0, 3) for _ in range(3)]
+        if nc_fast(p, q) != nc(p, q):
+            fast_bad += 1
+    print(f"nc_fast (9 checks) vs nc (36 checks) on 200000 random pairs: {fast_bad} mismatches")
+    ok &= fast_bad == 0
     placed, bad = 0, 0
     for _ in range(50000):
         p = [rnd.uniform(0.5, 3) for _ in range(3)]

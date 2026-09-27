@@ -58,7 +58,7 @@ Wetzel in 2004 as an instance of a general unsolved fitting problem for boxes in
 higher dimensions. The main theorem has been verified in the Lean~4 proof assistant with the Mathlib
 library, together with the analogous criterion for strict fitting (without touching the container).
 The main criterion is constructive: when the box fits, it yields an explicit rotation. An implementation decides fitting and produces a
-placement in about $20$ microseconds, three to four orders of magnitude faster than a multi-start
+placement in about ten microseconds, three to four orders of magnitude faster than a multi-start
 local numerical search over rotations, and without its false negative answers near the boundary.
 \end{abstract}
 
@@ -477,9 +477,10 @@ larger than $3\sqrt2/4$ in the cube.
 
 \section{Computation}\label{sec:computation}
 
-The implementation, like the Lean definition, simply runs through all $36$ pairs of permutations
-(only $9$ checks are essentially different, see Definition~\ref{def:NC}); each check takes two
-evaluations of formula~\eqref{eq:H} and a few comparisons, so the criterion takes constant time. When a check holds, the proof of Proposition~\ref{prop:suff} gives the rotation
+The Lean definition, and the function \texttt{nc} of the reference implementation, run through all
+$36$ pairs of permutations; only $9$ checks are essentially different (Definition~\ref{def:NC}), and
+the function \texttt{nc\_fast} performs only these. Each check takes two evaluations of
+formula~\eqref{eq:H} and a few comparisons, so the criterion takes constant time. When a check holds, the proof of Proposition~\ref{prop:suff} gives the rotation
 explicitly: two angles from Lemma~\ref{lem:strip}(a), one for the face in the vertical strip and one
 for the rectangle on the floor. The reference implementation \texttt{tools/box\_fit.py} in the
 repository (Section~\ref{sec:lean}) returns a rotation matrix $R$ with $\det R=1$ and a translation
@@ -489,10 +490,12 @@ placements (orthogonality of $R$ and all vertices inside $P$).
 For comparison we used a numerical search that minimises $\max_iw_i(R)/p_i$ over rotations by the
 Nelder--Mead method from random starts and answers ``fits'' when some start reaches a value $\le1$.
 On $200$ random pairs near the boundary (the box scaled by a factor $1\pm e$ from the largest fitting
-size, $10^{-4}\le e\le10^{-2}$) the criterion takes about $24$ microseconds per pair and the explicit
-placement about $20$ microseconds (Python, one core of a desktop computer), while the numerical
-search takes $78$, $228$ and $517$ milliseconds per pair with $5$, $20$ and $50$ starts, i.e.\ it is
-$3\cdot10^3$ to $2\cdot10^4$ times slower, and gives $27$, $5$ and $0$ wrong answers respectively. All
+size, $10^{-4}\le e\le10^{-2}$) the criterion takes about $42$ microseconds per pair with $36$ checks
+and about $7$ microseconds with $9$ checks, and the explicit placement about $12$ microseconds
+(Python, one core of a desktop computer; timings vary by a factor of about two between runs), while
+the numerical search takes $83$, $237$ and $526$ milliseconds per pair with $5$, $20$ and $50$
+starts, i.e.\ it is $2\cdot10^3$ to $10^4$ times slower even than the $36$-check version, and gives
+$27$, $5$ and $0$ wrong answers respectively. All
 its errors are ``does not fit'' for boxes that fit: a local search can confirm that a box fits, but its
 failure to find a position proves nothing. A rigorous negative answer requires a global method with
 guaranteed bounds, such as a branch-and-bound search over rotations, which is considerably more

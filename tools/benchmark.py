@@ -69,8 +69,10 @@ def main():
     fitting = [d for d, e in zip(data, exact) if e]
     print(f"{len(data)} pairs near the boundary, {len(fitting)} of them fit")
     t_nc = per_call(bf.nc, data)
+    t_fast = per_call(bf.nc_fast, data)
     t_pl = per_call(bf.place, fitting)
-    print(f"criterion NC (yes/no):             {t_nc * 1e6:8.1f} us per pair")
+    print(f"criterion NC (yes/no), 36 checks:  {t_nc * 1e6:8.1f} us per pair")
+    print(f"criterion NC (yes/no), 9 checks:   {t_fast * 1e6:8.1f} us per pair")
     print(f"criterion + explicit placement:    {t_pl * 1e6:8.1f} us per fitting pair")
     for starts in (5, 20, 50):
         t = time.perf_counter()
