@@ -55,8 +55,9 @@ the container; we prove this by showing that at any other position all three wid
 decreased simultaneously. The problem was posed by Garnett in 1923 and was described by Jerrard and
 Wetzel in 2004 as an instance of a general unsolved fitting problem for boxes in
 higher dimensions. The main theorem has been verified in the Lean~4 proof assistant with the Mathlib
-library, together with the analogous criterion for strict fitting (without touching the container),
-which is not obtained by merely making the inequalities strict. The criterion is constructive: when
+library, together with the analogous criterion for strict fitting (without touching the container).
+The latter is obtained by making all inequalities strict, including the one that selects the branch
+of the formula; making strict only the inequalities of the checks gives wrong answers. The criterion is constructive: when
 the box fits, it yields an explicit rotation. An implementation decides fitting and produces a
 placement in about $20$ microseconds, three to four orders of magnitude faster than a multi-start
 local numerical search over rotations, and without its false negative answers near the boundary.
@@ -515,7 +516,7 @@ Sections~\ref{sec:widths}--\ref{sec:proof} with strict inequalities.
 The change of the case split is essential, because $H(x,y;s)$ jumps at $s=x$: a face whose longer side
 equals the height may stand upright touching the ceiling, but if touching is forbidden it cannot be
 tilted slightly (a small tilt increases its height). For example, let $p=(1,1,1)$ and
-$q=(1,0.5,0.5)$. Making only the inequalities strict gives a check that holds: with a horizontal edge
+$q=(1,0.5,0.5)$. Making strict only the inequalities of the checks, with $H$ unchanged, gives a check that holds: with a horizontal edge
 $0.5$, $h^*=H(1,0.5;1)=0.5$ and $0.5\times0.5$ fits strictly into $1\times1$. But $\NC^\circ$ fails:
 here $H^\circ(1,0.5;1)=\min\bigl(1,\,0.5\cdot2.75/1.25\bigr)=1$, and each check requires
 $H^\circ(1,0.5;1)<1$ (for the floor if the horizontal edge is $1$, and for $h$ and then the floor if it

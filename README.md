@@ -36,9 +36,10 @@ other position all three widths of the box can be decreased simultaneously.
 For fitting without touching the container (`lean/Boxes/Strict.lean`):
 
 * `fitsStrict_iff_shrink`: the box fits strictly ⇔ it fits (criterion above) into `p − ε` for some `ε > 0`;
-* `fitsStrict_iff_NCs`: an explicit strict criterion — all inequalities strict **and** the case split
-  in `H` changed from `x ≤ s` to `x < s`. Making only the inequalities strict is wrong: for the unit
-  cube and the `1 × 0.5 × 0.5` box it would answer "fits strictly".
+* `fitsStrict_iff_NCs`: an explicit strict criterion — every inequality made strict, including the
+  case split in `H` (`x ≤ s` becomes `x < s`); the cost is the same. Making strict only the
+  inequalities of the checks, with `H` unchanged, is wrong: for the unit cube and the
+  `1 × 0.5 × 0.5` box it would answer "fits strictly".
 
 ## Contents
 
