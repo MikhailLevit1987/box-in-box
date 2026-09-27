@@ -2,32 +2,34 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22974798.svg)](https://doi.org/10.5281/zenodo.22974798)
 
-An explicit necessary and sufficient condition for a rectangular box with edges `q₁, q₂, q₃ ≥ 0`
-to fit, after an arbitrary rigid motion, into a rectangular box with edges `p₁, p₂, p₃ > 0`,
+An explicit necessary and sufficient condition for a rectangular box with edges $q_1, q_2, q_3 \ge 0$
+to fit, after an arbitrary rigid motion, into a rectangular box with edges $p_1, p_2, p_3 > 0$,
 with a complete formal proof in Lean 4 / Mathlib.
 
 *Русская версия статьи: [`paper/box-in-box-ru.pdf`](paper/box-in-box-ru.pdf).*
 
 ## The criterion
 
-For `x ≥ y ≥ 0`, `s ≥ 0` let
+For $x \ge y \ge 0$ and $s \ge 0$ let
 
-```
-H(x, y; s) = y                                                   if x ≤ s,
-H(x, y; s) = min( x, (2xys + (x² − y²)·√(x² + y² − s²)) / (x² + y²) )   if x > s,
-```
-
-`H(u, v; s) = H(max(u,v), min(u,v); s)`, and `Fit(a, b; u, v) :⇔ min(u,v) ≤ a and H(u, v; a) ≤ b`
-(the `u × v` rectangle fits into the `a × b` rectangle).
-
-**Theorem.** The box `q` fits into the box `p` if and only if for some choice of a "height" axis `i`
-of `p` (the other two being `i', i''`) and a "horizontal" edge `j` of `q` (the other two being `k, l`)
-
-```
-min(q_k, q_l) ≤ p_i   and   Fit(p_i', p_i''; q_j, H(q_k, q_l; p_i)).
+```math
+H(x,y;s)=\begin{cases}
+y, & x\le s,\\[4pt]
+\min\left(x,\ \dfrac{2xys+(x^2-y^2)\sqrt{x^2+y^2-s^2}}{x^2+y^2}\right), & x>s,
+\end{cases}
 ```
 
-These are 9 explicit checks (18 counting the order of `i', i''`). The key step: if a box fits at
+$H(u,v;s)=H(\max(u,v),\min(u,v);s)$, and $\mathrm{Fit}(a,b;u,v)$ means $\min(u,v)\le a$ and
+$H(u,v;a)\le b$ (the $u\times v$ rectangle fits into the $a\times b$ rectangle).
+
+**Theorem.** The box $q$ fits into the box $p$ if and only if for some choice of a "height" axis $i$
+of $p$ (the other two being $i', i''$) and a "horizontal" edge $j$ of $q$ (the other two being $k, l$)
+
+```math
+\min(q_k,q_l)\le p_i \qquad\text{and}\qquad \mathrm{Fit}\bigl(p_{i'},\,p_{i''};\;q_j,\;H(q_k,q_l;p_i)\bigr).
+```
+
+These are 9 explicit checks (18 counting the order of $i', i''$). The key step: if a box fits at
 all, it fits with one of its edges perpendicular to one of the axes of the container, because at any
 other position all three widths of the box can be decreased simultaneously.
 
