@@ -101,7 +101,10 @@ def place(p, q):
 
 
 def nc_fast(p, q):
-    """Criterion NC with only the 9 essentially different checks (same answer as nc).
+    """Criterion NC9 with only the 9 essentially different checks (same answer as nc).
+
+    A literal transcription of `NC9` from `lean/Boxes/NineChecks.lean`; the Lean theorem
+    `NC_iff_NC9` proves that it is equivalent to `NC`.
 
     nc runs through all 36 pairs of permutations, like the Lean definition.  A check depends only on
     the height axis i and the horizontal edge j: H is symmetric in its first two arguments, and

@@ -30,8 +30,9 @@ of $p$ (the other two being $i', i''$) and a "horizontal" edge $j$ of $q$ (the o
 ```
 
 These are 9 essentially different checks: $H$ is symmetric in $q_k, q_l$, and both orders of
-$p_{i'}, p_{i''}$ give the same condition. (The Lean definition and `tools/box_fit.py` simply run
-through all 36 pairs of permutations.) The key step: if a box fits at
+$p_{i'}, p_{i''}$ give the same condition. The Lean definition `NC` and `nc` in `tools/box_fit.py` simply run
+through all 36 pairs of permutations; `NC9` in `lean/Boxes/NineChecks.lean` (proved equivalent,
+`NC_iff_NC9`) and `nc_fast` use only the 9. The key step: if a box fits at
 all, it fits with one of its edges perpendicular to one of the axes of the container, because at any
 other position all three widths of the box can be decreased simultaneously.
 
@@ -74,6 +75,8 @@ Expected output of the last command:
 'Boxes.NC_of_fits' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Boxes.fitsStrict_iff_shrink' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Boxes.fitsStrict_iff_NCs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Boxes.NC_iff_NC9' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Boxes.fits_iff_NC9' depends on axioms: [propext, Classical.choice, Quot.sound]
 ```
 
 i.e. no `sorryAx`. The meaning of the theorem depends only on the definitions `box` and `Fits`
@@ -91,9 +94,9 @@ python tools/benchmark.py                           # timing versus a numerical 
 
 `--place` returns a rotation `R` (det R = 1) and a translation `t` such that `x ↦ R x + t` maps the
 box `q` into the box `p`; it is the construction from the proof of sufficiency. The criterion takes
-about 40 µs per pair in Python with all 36 checks (`nc`) and about 7 µs with the 9 essentially
-different ones (`nc_fast`), the placement about 12 µs; a multi-start local numerical search
-over rotations is 2·10³–10⁴ times slower on pairs near the boundary and can wrongly answer "does not
+about 34 µs per pair in Python with all 36 checks (`nc`) and about 9 µs with the 9 essentially
+different ones (`nc_fast`), the placement about 14 µs; a multi-start local numerical search
+over rotations is 2·10³–1.6·10⁴ times slower on pairs near the boundary and can wrongly answer "does not
 fit" (section "Computation" of the paper).
 
 Floating-point comparisons are exact only in exact arithmetic; near the boundary rounding may flip
