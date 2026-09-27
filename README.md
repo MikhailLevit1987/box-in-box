@@ -110,6 +110,7 @@ resolves to the latest one).
 
 | Version | DOI |
 |---|---|
+| 1.2 | [10.5281/zenodo.22986696](https://doi.org/10.5281/zenodo.22986696) |
 | 1.1 | [10.5281/zenodo.22986340](https://doi.org/10.5281/zenodo.22986340) |
 | 1.0 | [10.5281/zenodo.22974799](https://doi.org/10.5281/zenodo.22974799) |
 
