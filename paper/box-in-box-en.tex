@@ -58,7 +58,7 @@ Wetzel in 2004 as an instance of a general unsolved fitting problem for boxes in
 higher dimensions. The main theorem has been verified in the Lean~4 proof assistant with the Mathlib
 library, together with the analogous criterion for strict fitting (without touching the container).
 The main criterion is constructive: when the box fits, it yields an explicit rotation. An implementation decides fitting and produces a
-placement in about ten microseconds, three to four orders of magnitude faster than a multi-start
+placement in a few tens of microseconds, three to four orders of magnitude faster than a multi-start
 local numerical search over rotations, and without its false negative answers near the boundary.
 \end{abstract}
 
@@ -401,7 +401,7 @@ is positive both for $h_i\ne0$ and for $h_i=0$.
 The idea is as follows. Either some direction $h$ decreases all widths to first order, or the
 first-order terms $b_i\cdot h$ are blocked by a nonnegative relation $\sum_i\nu_ib_i=0$; in the latter
 case Lemma~\ref{lem:key} shows that the second-order terms decrease the widths.
-We use Motzkin's theorem of the alternative \cite{Motzkin1936,Schrijver1986} in the following form:
+We use Motzkin's theorem of the alternative \cite[Satz~D6]{Motzkin1936} in the following form:
 for vectors $b_i\in\R^3$ and numbers $c_i$, $i\in K$, either the system $b_i\cdot z<c_i$ ($i\in K$)
 has a solution, or there is $\mu\ge0$, $\mu\ne0$, supported on $K$, with $\sum_i\mu_ib_i=0$ and
 $\sum_i\mu_ic_i\le0$.
@@ -586,8 +586,7 @@ $0,1,2$). The command \texttt{\#print axioms Boxes.fits\_iff\_NC} reports only t
 \bibitem{MartinStephenson1989} R.~R.~Martin, P.~C.~Stephenson, Containment algorithms for objects in rectangular boxes, in: \emph{Theory and Practice of Geometric Modeling}, Springer, 1989, 307--325.
 \bibitem{Motzkin1936} T.~S.~Motzkin, \emph{Beitr\"age zur Theorie der linearen Ungleichungen}, Dissertation, Universit\"at Basel, Azriel, Jerusalem, 1936.
 \bibitem{Post1993} K.~A.~Post, Triangle in a triangle: on a problem of Steinhaus, \emph{Geom. Dedicata} 45 (1993) 115--120.
-\bibitem{Schrijver1986} A.~Schrijver, \emph{Theory of Linear and Integer Programming}, Wiley, 1986.
-\bibitem{vanSwinden1816} J.~H.~van Swinden, \emph{Grondbeginsels der Meetkunde}, 2nd ed., P.~den Hengst en Zoon, Amsterdam, 1816, pp.~512--513.
+\bibitem{vanSwinden1816} J.~H.~van Swinden, \emph{Grondbeginsels der Meetkunde}, 2nd ed., P.~den Hengst en Zoon, Amsterdam, 1816, pp.~512--513, 608--610.
 \bibitem{Wetzel2000} J.~E.~Wetzel, Rectangles in rectangles, \emph{Math. Mag.} 73 (2000) 204--211.
 \end{thebibliography}
 

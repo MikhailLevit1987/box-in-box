@@ -58,7 +58,7 @@
 интерактивного доказательства Lean~4 с библиотекой Mathlib, вместе с аналогичным критерием строгого
 вложения (без касания стенок).
 Основной критерий конструктивен: если коробка помещается, он даёт явный поворот. Реализация критерия
-отвечает на вопрос и строит положение коробки примерно за десять микросекунд, на три-четыре порядка
+отвечает на вопрос и строит положение коробки за несколько десятков микросекунд, на три-четыре порядка
 быстрее локального численного поиска по поворотам из многих начальных точек и без его ложных
 ответов <<не помещается>> вблизи границы.
 \end{abstract}
@@ -413,7 +413,7 @@ $d_iB_{ic}=(d_ih_c-m_{ic}h_i)^2+(d_id_c-m_{ic}^2)h_i^2$ положительно
 Идея такова. Либо некоторое направление $h$ уменьшает все ширины в первом порядке, либо члены первого
 порядка $b_i\cdot h$ заблокированы неотрицательным соотношением $\sum_i\nu_ib_i=0$; во втором случае
 лемма~\ref{lem:key} показывает, что ширины уменьшают члены второго порядка.
-Мы используем теорему Моцкина об альтернативах \cite{Motzkin1936,Schrijver1986} в следующей форме:
+Мы используем теорему Моцкина об альтернативах \cite[Satz~D6]{Motzkin1936} в следующей форме:
 для векторов $b_i\in\R^3$ и чисел $c_i$, $i\in K$, либо система $b_i\cdot z<c_i$ ($i\in K$)
 совместна, либо существует $\mu\ge0$, $\mu\ne0$, сосредоточенный на $K$, с $\sum_i\mu_ib_i=0$ и
 $\sum_i\mu_ic_i\le0$.
@@ -605,8 +605,7 @@ $0\le x_i\le q_i$, а \texttt{Fits p q} означает, что некотор�
 \bibitem{MartinStephenson1989} R.~R.~Martin, P.~C.~Stephenson, Containment algorithms for objects in rectangular boxes, in: \emph{Theory and Practice of Geometric Modeling}, Springer, 1989, 307--325.
 \bibitem{Motzkin1936} T.~S.~Motzkin, \textlatin{\emph{Beitr\"age zur Theorie der linearen Ungleichungen}, Dissertation, Universit\"at Basel}, Azriel, Jerusalem, 1936.
 \bibitem{Post1993} K.~A.~Post, Triangle in a triangle: on a problem of Steinhaus, \emph{Geom. Dedicata} 45 (1993) 115--120.
-\bibitem{Schrijver1986} A.~Schrijver, \emph{Theory of Linear and Integer Programming}, Wiley, 1986.
-\bibitem{vanSwinden1816} J.~H.~van Swinden, \emph{Grondbeginsels der Meetkunde}, 2nd ed., P.~den Hengst en Zoon, Amsterdam, 1816, с.~512--513.
+\bibitem{vanSwinden1816} J.~H.~van Swinden, \emph{Grondbeginsels der Meetkunde}, 2nd ed., P.~den Hengst en Zoon, Amsterdam, 1816, с.~512--513, 608--610.
 \bibitem{Wetzel2000} J.~E.~Wetzel, Rectangles in rectangles, \emph{Math. Mag.} 73 (2000) 204--211.
 \end{thebibliography}
 
