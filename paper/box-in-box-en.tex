@@ -58,8 +58,8 @@ higher dimensions. The main theorem has been verified in the Lean~4 proof assist
 library, together with the analogous criterion for strict fitting (without touching the container),
 which is not obtained by merely making the inequalities strict. The criterion is constructive: when
 the box fits, it yields an explicit rotation. An implementation decides fitting and produces a
-placement in about $20$ microseconds, three to four orders of magnitude faster than a numerical
-search over rotations, which moreover cannot certify that a box does not fit.
+placement in about $20$ microseconds, three to four orders of magnitude faster than a multi-start
+local numerical search over rotations, and without its false negative answers near the boundary.
 \end{abstract}
 
 \section{Introduction}
@@ -490,8 +490,10 @@ size, $10^{-4}\le e\le10^{-2}$) the criterion takes about $24$ microseconds per 
 placement about $20$ microseconds (Python, one core of a desktop computer), while the numerical
 search takes $78$, $228$ and $517$ milliseconds per pair with $5$, $20$ and $50$ starts, i.e.\ it is
 $3\cdot10^3$ to $2\cdot10^4$ times slower, and gives $27$, $5$ and $0$ wrong answers respectively. All
-its errors are ``does not fit'' for boxes that fit: a numerical search can confirm that a box fits, but
-it cannot prove that it does not. The script is \texttt{tools/benchmark.py}.
+its errors are ``does not fit'' for boxes that fit: a local search can confirm that a box fits, but its
+failure to find a position proves nothing. A rigorous negative answer requires a global method with
+guaranteed bounds, such as a branch-and-bound search over rotations, which is considerably more
+expensive; the criterion gives both answers exactly. The script is \texttt{tools/benchmark.py}.
 
 \section{Strict fitting}\label{sec:strict}
 

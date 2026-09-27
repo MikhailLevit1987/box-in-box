@@ -86,9 +86,9 @@ python tools/benchmark.py                           # timing versus a numerical 
 
 `--place` returns a rotation `R` (det R = 1) and a translation `t` such that `x ↦ R x + t` maps the
 box `q` into the box `p`; it is the construction from the proof of sufficiency. The criterion takes
-about 20–25 µs per pair in Python, the placement about 20 µs; a multi-start numerical search over
-rotations is 3·10³–2·10⁴ times slower on pairs near the boundary and can wrongly answer "does not fit"
-(section "Computation" of the paper).
+about 20–25 µs per pair in Python, the placement about 20 µs; a multi-start local numerical search
+over rotations is 3·10³–2·10⁴ times slower on pairs near the boundary and can wrongly answer "does not
+fit" (section "Computation" of the paper).
 
 Floating-point comparisons are exact only in exact arithmetic; near the boundary rounding may flip
 the answer.
