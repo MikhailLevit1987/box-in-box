@@ -55,9 +55,7 @@ the container; we prove this by showing that at any other position all three wid
 decreased simultaneously. The problem was posed by Garnett in 1923 and was described by Jerrard and
 Wetzel in 2004 as an instance of a general unsolved fitting problem for boxes in
 higher dimensions. The main theorem has been verified in the Lean~4 proof assistant with the Mathlib
-library, together with the analogous criterion for strict fitting (without touching the container).
-The latter is obtained by making all inequalities strict, including the one that selects the branch
-of the formula; making strict only the inequalities of the checks gives wrong answers. The criterion is constructive: when
+library, together with the analogous criterion for strict fitting (without touching the container). The criterion is constructive: when
 the box fits, it yields an explicit rotation. An implementation decides fitting and produces a
 placement in about $20$ microseconds, three to four orders of magnitude faster than a multi-start
 local numerical search over rotations, and without its false negative answers near the boundary.
