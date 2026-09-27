@@ -104,8 +104,10 @@ edges $(1,2,3)$ of $Q$. The \emph{check} $\NC_{(i,i',i''),(j,k,l)}$ is
 \min(q_k,q_l)\le p_i\quad\text{and}\quad \Fit\bigl(p_{i'},p_{i''};\,q_j,\,h^*\bigr),\qquad
 h^*:=H(q_k,q_l;p_i).
 \]
-$\NC(p,q)$ holds if at least one check holds. Since $H$ is symmetric in its first two arguments,
-there are $9$ choices of $(i,j)$ and two orders of the ``floor'' axes $(i',i'')$ for each.
+$\NC(p,q)$ holds if at least one check holds. Since $H$ is symmetric in its first two arguments
+and $\Fit(a,b;u,v)$ is equivalent to $\Fit(b,a;u,v)$ (both say that the $u\times v$ rectangle fits
+into the $a\times b$ rectangle, Remark~\ref{rem:carver}), a check depends only on the choice of
+$(i,j)$: there are $9$ essentially different checks.
 \end{definition}
 
 Geometrically, the check describes positions in which edge $j$ of $Q$ is horizontal, i.e.\
@@ -475,8 +477,9 @@ larger than $3\sqrt2/4$ in the cube.
 
 \section{Computation}\label{sec:computation}
 
-The criterion consists of at most $36$ checks, each with two evaluations of formula~\eqref{eq:H} and
-a few comparisons, so it takes constant time. When a check holds, the proof of Proposition~\ref{prop:suff} gives the rotation
+The implementation, like the Lean definition, simply runs through all $36$ pairs of permutations
+(only $9$ checks are essentially different, see Definition~\ref{def:NC}); each check takes two
+evaluations of formula~\eqref{eq:H} and a few comparisons, so the criterion takes constant time. When a check holds, the proof of Proposition~\ref{prop:suff} gives the rotation
 explicitly: two angles from Lemma~\ref{lem:strip}(a), one for the face in the vertical strip and one
 for the rectangle on the floor. The reference implementation \texttt{tools/box\_fit.py} in the
 repository (Section~\ref{sec:lean}) returns a rotation matrix $R$ with $\det R=1$ and a translation

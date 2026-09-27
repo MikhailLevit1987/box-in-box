@@ -29,7 +29,9 @@ of $p$ (the other two being $i', i''$) and a "horizontal" edge $j$ of $q$ (the o
 \min(q_k,q_l)\le p_i \qquad\text{and}\qquad \mathrm{Fit}\bigl(p_{i'},\,p_{i''};\;q_j,\;H(q_k,q_l;p_i)\bigr).
 ```
 
-These are 9 explicit checks (18 counting the order of $i', i''$). The key step: if a box fits at
+These are 9 essentially different checks: $H$ is symmetric in $q_k, q_l$, and both orders of
+$p_{i'}, p_{i''}$ give the same condition. (The Lean definition and `tools/box_fit.py` simply run
+through all 36 pairs of permutations.) The key step: if a box fits at
 all, it fits with one of its edges perpendicular to one of the axes of the container, because at any
 other position all three widths of the box can be decreased simultaneously.
 
