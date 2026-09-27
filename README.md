@@ -97,8 +97,13 @@ the answer.
 ## Citation
 
 Mikhail Levit, *When does a box fit into a box? An explicit criterion with a formal proof*, 2026.
-Zenodo, [doi:10.5281/zenodo.22974798](https://doi.org/10.5281/zenodo.22974798) (all versions;
-version 1.0: [doi:10.5281/zenodo.22974799](https://doi.org/10.5281/zenodo.22974799)).
+Zenodo, [doi:10.5281/zenodo.22974798](https://doi.org/10.5281/zenodo.22974798) (all versions,
+resolves to the latest one).
+
+| Version | DOI |
+|---|---|
+| 1.1 | [10.5281/zenodo.22986340](https://doi.org/10.5281/zenodo.22986340) |
+| 1.0 | [10.5281/zenodo.22974799](https://doi.org/10.5281/zenodo.22974799) |
 
 ## License
 
